@@ -13,6 +13,18 @@ public interface DialogMode
     SendMessage getBroken();
     SendMessage getSwitchCancelled();
     SendMessage getPointsEntry();
+    SendMessage getPointsValidateError();
+    SendMessage getPointsWrongRowsSize();
+
+    SendMessage getPointsWrongRowsLength();
+
+    SendMessage getPointsAccepted();
+
+    SendMessage getPointsNoFile();
+
+    SendMessage getPointsEntryFile();
+
+    SendMessage getPointsBadFile();
 
     enum CallBacks{
         START_CALC,

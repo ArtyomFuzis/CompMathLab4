@@ -67,4 +67,54 @@ public class CommunismMode implements DialogMode {
                 "На первой строке должны располагаться значения x, на второй y.");
         return message;
     }
+
+    @Override
+    public SendMessage getPointsValidateError() {
+        SendMessage message = new SendMessage();
+        message.setText("Товарищ, к сожалению ваш ввод не является <s>полит</s>корректным. " +
+                "Пожалуйста, проверьте что вы все вводите правильно!");
+        return message;
+    }
+
+    @Override
+    public SendMessage getPointsWrongRowsSize() {
+        SendMessage message = new SendMessage();
+        message.setText("Товарищ, вы должны ввести именно две строки!");
+        return message;
+    }
+
+    @Override
+    public SendMessage getPointsWrongRowsLength() {
+        SendMessage message = new SendMessage();
+        message.setText("Товарищ, строки должны содержать одинаковое количество значений!!!");
+        return message;
+    }
+
+    @Override
+    public SendMessage getPointsAccepted() {
+        SendMessage message = new SendMessage();
+        message.setText("Товарищ, партия гордится вами! Вы успешно ввели точки, ожидайте обработки...");
+        return message;
+    }
+
+    @Override
+    public SendMessage getPointsNoFile() {
+        SendMessage message = new SendMessage();
+        message.setText("Товарищ, пожалуйста, прикрепите файл, не испытывайте терпение партии!");
+        return message;
+    }
+
+    @Override
+    public SendMessage getPointsEntryFile() {
+        SendMessage message = new SendMessage();
+        message.setText("Хорошо, товарищ. Теперь, пожалуйста, прикрепите файл:");
+        return message;
+    }
+
+    @Override
+    public SendMessage getPointsBadFile() {
+        SendMessage message = new SendMessage();
+        message.setText("Вы загрузили какой-то странный файл, загрузите новый. Партия не может ждать вечно.");
+        return message;
+    }
 }

@@ -29,6 +29,10 @@ public class StartCalcHandler implements ResponseMethod {
                 state.setMeth(ctx.getBean(PointsEntryHandler.class));
                 yield Collections.singletonList(state.getMode().getPointsEntry());
             }
+            case SEND_FILE -> {
+                state.setMeth(ctx.getBean(PointsEntryFileHandler.class));
+                yield Collections.singletonList(state.getMode().getPointsEntryFile());
+            }
             case null, default ->  Collections.singletonList(state.getMode().getNotChoose());
         };
     }
