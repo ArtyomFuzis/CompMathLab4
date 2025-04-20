@@ -1,6 +1,16 @@
 spring:
   application:
     name: CompMathLab4
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+
 bot:
-  name: ${BOT_NAME}
+  name:  ${BOT_NAME}
   token: ${BOT_TOKEN}
+
+rabbitmq:
+  to_solve: ${RABBITMQ_QUEUE_TO_SOLVE}
+  to_response: ${RABBITMQ_QUEUE_TO_RESPONSE}
