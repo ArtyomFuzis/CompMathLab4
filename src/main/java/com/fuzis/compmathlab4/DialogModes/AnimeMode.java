@@ -6,169 +6,167 @@ import com.fuzis.compmathlab4.Math.Approxes;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-
-import java.util.List;
 
 @Component
-public class CommunismMode implements DialogMode {
+public class AnimeMode implements DialogMode {
     @Autowired
-    public CommunismMode(CommunismKeyboard board, Bot bot) {
+    public AnimeMode(AnimeKeyboard board, Bot bot) {
         this.board = board;
         this.bot = bot;
     }
     Bot bot;
-    CommunismKeyboard board;
-    private void sendCommunismPhoto(String subCategory, ChatState state){
-        this.bot.sendRandomPhoto("soviet\\"+subCategory, state);
+    AnimeKeyboard board;
+    private void sendAnimePhoto(String subCategory, ChatState state){
+        this.bot.sendRandomPhoto("anime\\"+subCategory, state);
     }
     @Override
     public void getStartMessage(ChatState state) {
-        sendCommunismPhoto("greeting", state);
-        bot.sendMessage("Здравствуйте, товарищ! Что вы хотите сделать?\n<s><b>Товарищ майор уже следит за вами</b></s>", state, board.getStartKeyBoard());
+        sendAnimePhoto("greeting", state);
+        bot.sendMessage("Добро пожаловать в этот дивный мир, тут всегда вам рады, ня! ", state, board.getStartKeyBoard());
     }
 
     @Override
     public void getNotChoose(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("<b>Товарищ, будьте благоразумны!</b>\nНе пытайтесь сломать результат " +
-                "труда народа, используйте только последние предложенные варианты!", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Нуу, щто-то не так, давай ещё разок! ¬_¬", state);
     }
 
     @Override
     public void getStartCalculations(ChatState state) {
-        sendCommunismPhoto("enter", state);
-        bot.sendMessage("Пожалуйста, товарищ, выберите какой метод ввода вы хотите использовать:", state, board.getInputTypeKeyBoard());
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Документы с собой? (●'◡'●)", state, board.getInputTypeKeyBoard());
     }
 
     @Override
     public void getSwitchMode(ChatState state) {
-        sendCommunismPhoto("switch", state);
-        bot.sendMessage("Товарищ!!!!\nВы в своем уме?! Даже предатель родины бы на такое бы не пошел! Вы правда желаете этого?", state, board.switchBoard());
+        sendAnimePhoto("switch", state);
+        bot.sendMessage("Ты... Ты правда уходишь?! ~_~", state, board.switchBoard());
     }
     @Override
     public void getBroken(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("К сожалению, произошла неизвестная ошибка, не забудьте доложить компартии об этом. Текущее состояние сброшено.", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("НяDeath", state);
     }
 
     @Override
     public void getSwitchCancelled(ChatState state) {
-        bot.sendMessage("<b>Вы сделали правильный выбор</b>", state);
+        bot.sendMessage("Уряяяя, ты остался. ヾ(≧▽≦*)o", state);
     }
 
     @Override
     public void getPointsEntry(ChatState state) {
-        sendCommunismPhoto("enter", state);
-        bot.sendMessage("Пожалуйста, товарищ, введите от 8 до 12 пар чисел в две строки через пробел. " +
-                "На первой строке должны располагаться значения x, на второй y.", state);
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Хорошо, но давай тогда две строки из 8-12 значений ^_-", state);
     }
 
     @Override
     public void getPointsValidateError(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("Товарищ, к сожалению ваш ввод не является <s>полит</s>корректным. " +
-                "Пожалуйста, проверьте что вы все вводите правильно!", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Нууу, ты щто-то не то ввел, давай-ка ещё разок (¬_¬ )", state);
     }
 
     @Override
     public void getPointsWrongRowsSize(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("Товарищ, вы должны ввести именно две строки!", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Две строфькиии хочу! ヽ（≧□≦）ノ", state);
     }
 
     @Override
     public void getPointsWrongRowsLength(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("Товарищ, строки должны содержать одинаковое количество значений!!!", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("А пофему количество значений разное? φ(*￣0￣)", state);
     }
 
     @Override
     public void getPointsAccepted(ChatState state) {
-        sendCommunismPhoto("wait", state);
-        bot.sendMessage("Товарищ, партия гордится вами! Вы успешно ввели точки, ожидайте обработки...", state);
+        sendAnimePhoto("wait", state);
+        bot.sendMessage("Уря, все верно! o(*￣▽￣*)ブ", state);
     }
 
     @Override
     public void getPointsNoFile(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("Товарищ, пожалуйста, прикрепите файл, не испытывайте терпение партии!", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("А файлик где? ＞︿＜", state);
     }
 
     @Override
     public void getPointsEntryFile(ChatState state) {
-        sendCommunismPhoto("enter", state);
-        bot.sendMessage("Хорошо, товарищ. Теперь, пожалуйста, прикрепите файл:", state);
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Тогда давайте их сюда! ヾ(≧▽≦*)o", state);
     }
 
     @Override
     public void getPointsBadFile(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("Вы загрузили какой-то странный файл, загрузите новый. Партия не может ждать вечно.", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Плохой файлик, хочу новый! ヽ（≧□≦）ノ", state);
     }
 
     @Override
     public void getPointsSimularPoints(ChatState state) {
-        sendCommunismPhoto("validate", state);
-        bot.sendMessage("В вашем наборе данных есть одинаковые значения для x. Для функции такое не допустимо, товарищ, исправьте!", state);
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Ну что же ты, в функциях не бывает одинаковых аргументов! (╯‵□′)╯︵┻━┻", state);
     }
 
     @Override
     public void getReportGot(ChatState state) {
-        sendCommunismPhoto("report", state);
-        bot.sendMessage("<b>ЗАПРОШЕННЫЙ ОТЧЕТ</b>", state);
+        sendAnimePhoto("report", state);
+        bot.sendMessage("✨Отчётикс✨", state);
     }
 
     @Override
     public void getReportTitle(Approxes el,ChatState state) {
         String functype= switch (el){
-            case Linear -> "ЛИНЕЙНАЯ";
-            case Square -> "КВАДРАТИЧНАЯ";
-            case Cube -> "КУБИЧЕСКАЯ";
-            case Log -> "ЛОГАРИФМИЧЕСКАЯ";
-            case Exp -> "ЭКСПОНЕНЦИАЛЬНАЯ";
-            case Pow -> "СТЕПЕННАЯ";
+            case Linear -> "линия";
+            case Square -> "квадратная линия";
+            case Cube -> "кубическая линия";
+            case Log -> "логарифмик";
+            case Exp -> "экспонента";
+            case Pow -> "степень";
         };
-        bot.sendMessage("<b>ФУНКЦИЯ "+functype+"</b>", state);
+        bot.sendMessage("ФунциNya: " + functype, state);
     }
 
     @Override
     public void getReportPearson(double res,ChatState state) {
         String comment;
-        if(res < 0.3) comment = "связь слабее даже союзников третьего рейха";
-        else if(res < 0.5) comment = "связь умеренная (такая же умеренная, как и враги народа)";
-        else if(res < 0.7) comment = "связь заметная (измерима штангенциркулем)";
-        else if(res < 0.9) comment = "связь высока (как Останкинская телебашня)";
-        else comment = "связь очень высока, как и ваша верность партии";
-        bot.sendMessage("Коэффициент Пирсона: " + res+" - " +comment, state);
+        if(res < 0.3) comment = "слабоватенько";
+        else if(res < 0.5) comment = "все равно с слабо";
+        else if(res < 0.7) comment = "чуть сильней, чем слабо";
+        else if(res < 0.9) comment = "связь неплоха";
+        else comment = "связь большая";
+        bot.sendMessage("Пирсон: " + res+" - " +comment, state);
     }
 
     @Override
     public void getReportRS(double res, ChatState state) {
         String comment;
-        if(res < 0.5) comment = "точность аппроксимации очень низка (такое нам не годится, товарищ)";
-        else if(res < 0.75) comment = "точность аппроксимации низка (все ещё недостаточно для партии)";
-        else if(res < 0.95) comment = "точность аппроксимации удовлетворительна (товарищ, старайтесь лучше)";
-        else comment = "точность достаточна (хорошая работа, в будущем, возможно вам будет назначен повышенный социальный рейтинг)";
-        bot.sendMessage("Коэффициент Детерминации: " + res+" - " +comment, state);
+        if(res < 0.5) comment = "точность мала.... ＞︿＜";
+        else if(res < 0.75) comment = "плохо";
+        else if(res < 0.95) comment = "неплохо";
+        else comment = "круто";
+        bot.sendMessage("Коэффициент Д№тер##н**и~: " + res+" - " +comment, state);
     }
 
     @Override
     public void getReportBest(Approxes maxApprox, ChatState state) {
         String functype= switch (maxApprox){
-            case Linear -> "линейная";
-            case Square -> "квадратичная";
-            case Cube -> "кубическая";
-            case Log -> "логарифмическая";
-            case Exp -> "экспоненциальная";
-            case Pow -> "степенная";
+            case Linear -> "линия";
+            case Square -> "квадратная линия";
+            case Cube -> "кубическая линия";
+            case Log -> "логарифмик";
+            case Exp -> "экспонента";
+            case Pow -> "степень";
         };
-        bot.sendMessage("Одна из лучших аппроксимирующих функций: " + functype, state);
+        bot.sendMessage("Лучшая ФунциNya: " + functype, state);
     }
 
     @Override
     public void getReportEnd(ChatState state) {
-        bot.sendMessage("Товарищ, отчет закончен. Не забудьте доложить о результатах вычислений в соответствующие органы.", state);
+        bot.sendMessage("Готово, ня! (≧∇≦)ﾉ", state);
+    }
+
+    @Override
+    public void getMakeSwitch(ChatState state) {
+        bot.sendMessage("Уряяяя, ты выбрал правильную сторону! ☆*: .｡. o(≧▽≦)o .｡.:*☆", state);
     }
 }

@@ -1,6 +1,8 @@
 package com.fuzis.compmathlab4.Handlers;
 
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.DialogModes.AnimeMode;
+import com.fuzis.compmathlab4.DialogModes.CommunismMode;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -30,7 +32,30 @@ public class SwitchHandler implements ResponseMethod
                 state.getMode().getSwitchCancelled(state);
                 state.getMode().getStartMessage(state);
             }
-            case null, default ->  state.getMode().getNotChoose(state);
+            case DO_SWITCH -> {
+                if(state.getMode().getClass() == AnimeMode.class){
+                    state.setMode(ctx.getBean(CommunismMode.class));
+                } else {
+                    state.setMode(ctx.getBean(AnimeMode.class));
+                }
+                state.getMode().getMakeSwitch(state);
+                state.setMeth(ctx.getBean(StartResponseHandler.class));
+                state.getMode().getStartMessage(state);
+            }
+            case null, default -> {
+                if(update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().trim().equalsIgnoreCase("да")){
+                    if(state.getMode().getClass() == AnimeMode.class){
+                        state.setMode(ctx.getBean(CommunismMode.class));
+                    } else {
+                        state.setMode(ctx.getBean(AnimeMode.class));
+                    }
+                    state.getMode().getMakeSwitch(state);
+                    state.setMeth(ctx.getBean(StartResponseHandler.class));
+                    state.getMode().getStartMessage(state);
+                }
+                else state.getMode().getNotChoose(state);
+            }
+
         };
     }
 }

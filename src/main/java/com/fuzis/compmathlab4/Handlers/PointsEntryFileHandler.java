@@ -36,7 +36,7 @@ public class PointsEntryFileHandler implements ResponseMethod {
         try {
             String filePath = bot.execute(getFile).getFilePath();
             File res = bot.downloadFile(filePath);
-            validatePoints(String.join("\n", Files.readAllLines(res.toPath())), state, calcConductor);
+            validatePoints(String.join("\n", Files.readAllLines(res.toPath())), state, calcConductor, ctx);
         }
         catch (TelegramApiException | IOException e){
             state.getMode().getPointsBadFile(state);

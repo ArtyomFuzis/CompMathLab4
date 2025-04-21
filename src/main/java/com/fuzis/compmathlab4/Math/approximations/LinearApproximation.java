@@ -20,4 +20,9 @@ public class LinearApproximation implements MathApproximation {
         return new double[][]{{n, sx, sy}, {sx, sxx, sxy}};
     }
 
+    @Override
+    public double[] applyFunc(double[] xs, double[] ks) {
+        return Arrays.stream(xs).map(x->ks[0]+ks[1]*x).toArray();
+    }
+
 }

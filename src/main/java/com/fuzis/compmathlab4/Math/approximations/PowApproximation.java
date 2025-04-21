@@ -20,4 +20,9 @@ public class PowApproximation implements MathApproximation {
         return new double[][]{{n, sx, sy}, {sx, sxx, sxy}};
     }
 
+    @Override
+    public double[] applyFunc(double[] xs, double[] ks) {
+        return Arrays.stream(xs).map(x->Math.pow(x, ks[1])*+ Math.exp(ks[0])).toArray();
+    }
+
 }

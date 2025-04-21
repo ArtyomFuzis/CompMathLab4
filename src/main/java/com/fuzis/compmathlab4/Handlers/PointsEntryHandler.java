@@ -25,7 +25,7 @@ public class PointsEntryHandler implements ResponseMethod
 
     @Override
     public void handle(ChatState state, Update update) {
-        if(!update.hasMessage())  {state.getMode().getNotChoose(state);return;}
-        validatePoints(update.getMessage().getText(), state, calcConductor);
+        if(!update.hasMessage() || !update.getMessage().hasText())  {state.getMode().getNotChoose(state);return;}
+        validatePoints(update.getMessage().getText(), state, calcConductor, ctx);
     }
 }

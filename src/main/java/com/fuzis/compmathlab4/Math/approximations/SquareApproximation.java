@@ -23,4 +23,9 @@ public class SquareApproximation implements MathApproximation {
         }
         return new double[][]{{n, sx, sxx, sy}, {sx, sxx, sxxx, sxy}, {sxx, sxxx, sxxxx, sxxy}};
     }
+
+    @Override
+    public double[] applyFunc(double[] xs, double[] ks) {
+        return Arrays.stream(xs).map(x->ks[0]+ks[1]*x+ks[2]*x*x).toArray();
+    }
 }

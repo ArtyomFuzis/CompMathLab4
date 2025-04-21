@@ -34,4 +34,9 @@ public class CubeApproximation implements MathApproximation {
         };
     }
 
+    @Override
+    public double[] applyFunc(double[] xs, double[] ks) {
+        return Arrays.stream(xs).map(x->ks[0]+ks[1]*x+ks[2]*x*x+ks[3]*x*x*x).toArray();
+    }
+
 }

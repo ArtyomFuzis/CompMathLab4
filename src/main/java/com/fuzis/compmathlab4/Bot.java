@@ -1,8 +1,8 @@
 package com.fuzis.compmathlab4;
 
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.DialogModes.CommunismMode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -69,7 +68,12 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
     public void sendRandomPhoto(String category, ChatState state) {
-        sendPhoto(utils.getPhoto(category), state);
+        sendPhoto(utils.getRandomPhoto(category), state);
+    }
+    public void sendGraph(String UUID, ChatState state) {
+        File fl = new File(".\\imgs\\graph\\"+UUID+".jpg");
+        sendPhoto(fl, state);
+        fl.delete();
     }
     @Override
     public String getBotUsername() {

@@ -20,4 +20,9 @@ public class LogApproximation implements MathApproximation {
         return new double[][]{{n, sx, sy}, {sx, sxx, sxy}};
     }
 
+    @Override
+    public double[] applyFunc(double[] xs, double[] ks) {
+        return Arrays.stream(xs).map(x->Math.log(x)*ks[1]+ks[0]).toArray();
+    }
+
 }

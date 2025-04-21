@@ -1,6 +1,7 @@
 package com.fuzis.compmathlab4.interfaces;
 
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.Math.Approxes;
 
 public interface DialogMode
 {
@@ -25,12 +26,24 @@ public interface DialogMode
     void getPointsBadFile(ChatState state);
 
     void getPointsSimularPoints(ChatState state);
+    void getReportGot(ChatState state);
+
+    void getReportTitle(Approxes el, ChatState state);
+
+    void getReportPearson(double res,ChatState state);
+
+    void getReportRS(double res, ChatState state);
+
+    void getReportBest(Approxes maxApprox, ChatState state);
+    void getReportEnd(ChatState state);
+
+    void getMakeSwitch(ChatState state);
 
     enum CallBacks {
         START_CALC,
         SWITCH_MODE,
         MANUALLY_WRITE,
         SEND_FILE,
-        CANCEL_SWITCH
+        DO_SWITCH, CANCEL_SWITCH
     }
 }

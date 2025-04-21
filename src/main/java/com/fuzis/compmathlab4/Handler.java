@@ -25,8 +25,12 @@ public class Handler
     HashMap<Long, ChatState> userStates = new HashMap<>();
     public void handleMessage(Update update){
         Long chatId = update.hasMessage() ? update.getMessage().getChatId() : update.getCallbackQuery().getMessage().getChatId();
-        if(!userStates.containsKey(chatId) || (update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/start"))){
+        if(!userStates.containsKey(chatId)){
             userStates.put(chatId, new ChatState(ctx.getBean(CommunismMode.class), ctx.getBean(StartHandler.class), chatId));
+        }
+        else if(update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/start")){
+            var state = userStates.get(chatId);
+            userStates.put(chatId, new ChatState(state.getMode(), ctx.getBean(StartHandler.class), chatId));
         }
         ChatState state = userStates.get(chatId);
         state.getMeth().handle(state, update);

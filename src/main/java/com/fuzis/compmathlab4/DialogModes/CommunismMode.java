@@ -2,6 +2,7 @@ package com.fuzis.compmathlab4.DialogModes;
 
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.Math.Approxes;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -111,5 +112,68 @@ public class CommunismMode implements DialogMode {
     public void getPointsSimularPoints(ChatState state) {
         sendCommunismPhoto("validate", state);
         bot.sendMessage("В вашем наборе данных есть одинаковые значения для x. Для функции такое не допустимо, товарищ, исправьте!", state);
+    }
+
+    @Override
+    public void getReportGot(ChatState state) {
+        sendCommunismPhoto("report", state);
+        bot.sendMessage("<b>ЗАПРОШЕННЫЙ ОТЧЕТ</b>", state);
+    }
+
+    @Override
+    public void getReportTitle(Approxes el,ChatState state) {
+        String functype= switch (el){
+            case Linear -> "ЛИНЕЙНАЯ";
+            case Square -> "КВАДРАТИЧНАЯ";
+            case Cube -> "КУБИЧЕСКАЯ";
+            case Log -> "ЛОГАРИФМИЧЕСКАЯ";
+            case Exp -> "ЭКСПОНЕНЦИАЛЬНАЯ";
+            case Pow -> "СТЕПЕННАЯ";
+        };
+        bot.sendMessage("<b>ФУНКЦИЯ "+functype+"</b>", state);
+    }
+
+    @Override
+    public void getReportPearson(double res,ChatState state) {
+        String comment;
+        if(res < 0.3) comment = "связь слабее даже союзников третьего рейха";
+        else if(res < 0.5) comment = "связь умеренная (такая же умеренная, как и враги народа)";
+        else if(res < 0.7) comment = "связь заметная (измерима штангенциркулем)";
+        else if(res < 0.9) comment = "связь высока (как Останкинская телебашня)";
+        else comment = "связь очень высока, как и ваша верность партии";
+        bot.sendMessage("Коэффициент Пирсона: " + res+" - " +comment, state);
+    }
+
+    @Override
+    public void getReportRS(double res, ChatState state) {
+        String comment;
+        if(res < 0.5) comment = "точность аппроксимации очень низка (такое нам не годится, товарищ)";
+        else if(res < 0.75) comment = "точность аппроксимации низка (все ещё недостаточно для партии)";
+        else if(res < 0.95) comment = "точность аппроксимации удовлетворительна (товарищ, старайтесь лучше)";
+        else comment = "точность достаточна (хорошая работа, в будущем, возможно вам будет назначен повышенный социальный рейтинг)";
+        bot.sendMessage("Коэффициент Детерминации: " + res+" - " +comment, state);
+    }
+
+    @Override
+    public void getReportBest(Approxes maxApprox, ChatState state) {
+        String functype= switch (maxApprox){
+            case Linear -> "линейная";
+            case Square -> "квадратичная";
+            case Cube -> "кубическая";
+            case Log -> "логарифмическая";
+            case Exp -> "экспоненциальная";
+            case Pow -> "степенная";
+        };
+        bot.sendMessage("Одна из лучших аппроксимирующих функций: " + functype, state);
+    }
+
+    @Override
+    public void getReportEnd(ChatState state) {
+        bot.sendMessage("Товарищ, отчет закончен. Не забудьте доложить о результатах вычислений в соответствующие органы.", state);
+    }
+
+    @Override
+    public void getMakeSwitch(ChatState state) {
+        bot.sendMessage("Товарищ, вы таки соизволили вернуться. Не забудьте занести явку с повинной в следственный комитет по месту жительства.", state);
     }
 }
