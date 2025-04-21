@@ -1,4 +1,4 @@
-package com.fuzis.compmathlab4.Transfer;
+package com.fuzis.compmathlab4.Data;
 
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 

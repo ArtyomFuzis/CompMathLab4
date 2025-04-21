@@ -1,12 +1,11 @@
 package com.fuzis.compmathlab4.Handlers;
 
-import com.fuzis.compmathlab4.Transfer.UserState;
-import com.fuzis.compmathlab4.interfaces.DialogMode;
+import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Collections;
@@ -23,17 +22,17 @@ public class StartResponseHandler implements ResponseMethod
     public ApplicationContext ctx;
 
     @Override
-    public List<SendMessage> handle(UserState state, Update update) {
-        return switch (callbackOnly(update)) {
+    public void handle(ChatState state, Update update) {
+        switch (callbackOnly(update)) {
             case START_CALC -> {
                 state.setMeth(ctx.getBean(StartCalcHandler.class));
-                yield Collections.singletonList(state.getMode().getStartCalculations());
+                state.getMode().getStartCalculations(state);
             }
             case SWITCH_MODE -> {
                 state.setMeth(ctx.getBean(SwitchHandler.class));
-                yield Collections.singletonList(state.getMode().getSwitchMode());
+                state.getMode().getSwitchMode(state);
             }
-            case null, default -> Collections.singletonList(state.getMode().getNotChoose());
+            case null, default -> state.getMode().getNotChoose(state);
         };
     }
 }

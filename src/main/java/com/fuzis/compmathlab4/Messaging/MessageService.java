@@ -3,6 +3,7 @@ package com.fuzis.compmathlab4.Messaging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fuzis.compmathlab4.Math.Approxes;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToSolve;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +42,13 @@ public class MessageService {
         return Optional.empty();
     }
 
-    public void send_to_solve(MessageToSolve message) {
+    public void send_to_solve(MessageToSolve message, Long chatId, Approxes approx) {
         var msg_json = objToJson(message);
         if (msg_json.isPresent()) {
             Message msg = MessageBuilder.withBody(msg_json.get().getBytes())
                     .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                    .setHeader("ChatId", chatId)
+                    .setHeader("Approx", approx.name())
                     .build();
             rabbitTemplate.send(toSolveQueue, msg);
         } else {

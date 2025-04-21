@@ -1,32 +1,36 @@
 package com.fuzis.compmathlab4.interfaces;
 
+import com.fuzis.compmathlab4.Bot;
+import com.fuzis.compmathlab4.Data.ChatState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.List;
 
 public interface DialogMode
 {
-    SendMessage getStartMessage();
-    SendMessage getNotChoose();
-    SendMessage getStartCalculations();
-    SendMessage getSwitchMode();
-    SendMessage getBroken();
-    SendMessage getSwitchCancelled();
-    SendMessage getPointsEntry();
-    SendMessage getPointsValidateError();
-    SendMessage getPointsWrongRowsSize();
+    void getStartMessage(ChatState state);
+    void getNotChoose(ChatState state);
+    void getStartCalculations(ChatState state);
+    void getSwitchMode(ChatState state);
+    void getBroken(ChatState state);
+    void getSwitchCancelled(ChatState state);
+    void getPointsEntry(ChatState state);
+    void getPointsValidateError(ChatState state);
+    void getPointsWrongRowsSize(ChatState state);
 
-    SendMessage getPointsWrongRowsLength();
+    void getPointsWrongRowsLength(ChatState state);
 
-    SendMessage getPointsAccepted();
+    void getPointsAccepted(ChatState state);
 
-    SendMessage getPointsNoFile();
+    void getPointsNoFile(ChatState state);
 
-    SendMessage getPointsEntryFile();
+    void getPointsEntryFile(ChatState state);
 
-    SendMessage getPointsBadFile();
+    void getPointsBadFile(ChatState state);
 
-    enum CallBacks{
+    void getPointsSimlarPoints(ChatState state);
+
+    enum CallBacks {
         START_CALC,
         SWITCH_MODE,
         MANUALLY_WRITE,

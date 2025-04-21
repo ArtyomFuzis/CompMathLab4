@@ -1,6 +1,6 @@
 package com.fuzis.compmathlab4.DialogModes;
 
-import com.fuzis.compmathlab4.Transfer.CallbackPair;
+import com.fuzis.compmathlab4.Data.CallbackPair;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import com.fuzis.compmathlab4.interfaces.ModeKeyboard;
 import org.springframework.stereotype.Component;

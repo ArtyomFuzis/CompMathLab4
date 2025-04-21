@@ -1,6 +1,6 @@
 package com.fuzis.compmathlab4.interfaces;
 
-import com.fuzis.compmathlab4.Transfer.CallbackPair;
+import com.fuzis.compmathlab4.Data.CallbackPair;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
