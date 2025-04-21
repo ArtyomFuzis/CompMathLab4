@@ -1,8 +1,10 @@
 package com.fuzis.compmathlab4.Math;
 
 import com.fuzis.compmathlab4.Data.CalcData;
+import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.Math.approximations.*;
 import com.fuzis.compmathlab4.Messaging.MessageService;
+import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToSolve;
 import com.fuzis.compmathlab4.interfaces.MathApproximation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +24,17 @@ public class CalcConductor
         approxes.put(Approxes.Exp, expApproximation);
         approxes.put(Approxes.Pow, powApproximation);
         approxes.put(Approxes.Log, logApproximation);
-        _instance = new SendCollector();
         dataStore = new HashMap<>();
         this.msgService = msgService;
     }
     public final MessageService msgService;
-    public final SendCollector _instance;
     public final HashMap<Long, CalcData> dataStore;
     public HashMap<Approxes, MathApproximation> approxes;
-    public void startCalculations(double[] xs, double[] ys, Long chatId){
+    public void startCalculations(double[] xs, double[] ys, ChatState state){
         for(var el : approxes.keySet()){
-            setCalcData(chatId, new CalcData(xs, ys));
+            setCalcData(state.getChatId(), new CalcData(xs, ys, new HashMap<>(), state));
             double[][] solveRequest = approxes.get(el).preSolve(xs,ys);
-            msgService.send_to_solve(new MessageToSolve(solveRequest), chatId, el);
+            msgService.send_to_solve(new MessageToSolve(solveRequest), state.getChatId(), el);
         }
     }
     public synchronized void setCalcData(Long chatId, CalcData calcData){
@@ -44,8 +44,9 @@ public class CalcConductor
     public synchronized  CalcData getCalcData(Long chatId){
         return dataStore.get(chatId);
     }
-
-    public static class SendCollector{
-
+    public void continueCalculations(double[] ks, Long chatId, Approxes approx){
+        CalcData calcData = getCalcData(chatId);
+        calcData.ks().put(approx, ks);
+        msgService.send_to_graph(new MessageToGraph(approx, calcData.xs(), calcData.ys(), ks, chatId), chatId, approx);
     }
 }

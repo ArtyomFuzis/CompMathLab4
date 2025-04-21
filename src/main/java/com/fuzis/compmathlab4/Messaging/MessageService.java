@@ -4,6 +4,7 @@ package com.fuzis.compmathlab4.Messaging;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToSolve;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class MessageService {
     @Value("${rabbitmq.to_solve}")
     private String toSolveQueue;
+    @Value("${rabbitmq.to_graph}")
+    private String toGraphQueue;
 
 
     private final RabbitTemplate rabbitTemplate;
@@ -51,6 +54,20 @@ public class MessageService {
                     .setHeader("Approx", approx.name())
                     .build();
             rabbitTemplate.send(toSolveQueue, msg);
+        } else {
+            log.warn("Message was not sent to solver: {}", message.toString());
+        }
+    }
+
+    public void send_to_graph(MessageToGraph message, Long chatId, Approxes approx) {
+        var msg_json = objToJson(message);
+        if (msg_json.isPresent()) {
+            Message msg = MessageBuilder.withBody(msg_json.get().getBytes())
+                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                    .setHeader("ChatId", chatId)
+                    .setHeader("Approx", approx.name())
+                    .build();
+            rabbitTemplate.send(toGraphQueue, msg);
         } else {
             log.warn("Message was not sent to solver: {}", message.toString());
         }

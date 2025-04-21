@@ -1,4 +1,8 @@
 package com.fuzis.compmathlab4.Data;
 
-public record CalcData(double[] xs, double[] ys) {
+import com.fuzis.compmathlab4.Math.Approxes;
+
+import java.util.HashMap;
+
+public record CalcData(double[] xs, double[] ys, HashMap<Approxes, double[]>  ks, ChatState state) {
 }

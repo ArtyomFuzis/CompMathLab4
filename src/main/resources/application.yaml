@@ -14,3 +14,5 @@ bot:
 rabbitmq:
   to_solve: ${RABBITMQ_QUEUE_TO_SOLVE}
   to_response: ${RABBITMQ_QUEUE_TO_RESPONSE}
+  to_graph: ${RABBITMQ_QUEUE_TO_GRAPH}
+  from_graph:  ${RABBITMQ_QUEUE_FROM_GRAPH}

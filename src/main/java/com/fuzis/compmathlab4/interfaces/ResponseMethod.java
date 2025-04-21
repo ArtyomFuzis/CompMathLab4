@@ -1,6 +1,7 @@
 package com.fuzis.compmathlab4.interfaces;
 
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.Math.CalcConductor;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.*;
@@ -19,7 +20,7 @@ public interface ResponseMethod
             return null;
         }
     }
-    default void validatePoints(String input, ChatState state){
+    default void validatePoints(String input, ChatState state, CalcConductor calcConductor){
         var rows = input.trim().split("\n");
         if(rows.length != 2){ state.getMode().getPointsWrongRowsSize(state);return;}
         for(var row : rows){
@@ -43,6 +44,8 @@ public interface ResponseMethod
         }
         if(xs.size() != ys.size()){ state.getMode().getPointsWrongRowsLength(state);return;}
         if(xs_check.size() != xs.size()) {state.getMode().getPointsSimularPoints(state);return;}
+        calcConductor.startCalculations(xs.stream().mapToDouble(x -> x).toArray(), ys.stream().mapToDouble(x -> x).toArray(), state);
         state.getMode().getPointsAccepted(state);
+
     }
 }

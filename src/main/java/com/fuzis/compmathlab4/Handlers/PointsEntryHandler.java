@@ -1,6 +1,7 @@
 package com.fuzis.compmathlab4.Handlers;
 
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.Math.CalcConductor;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -15,14 +16,16 @@ import java.util.List;
 public class PointsEntryHandler implements ResponseMethod
 {
     @Autowired
-    public PointsEntryHandler(ApplicationContext ctx) {
+    public PointsEntryHandler(ApplicationContext ctx, CalcConductor calcConductor) {
         this.ctx = ctx;
+        this.calcConductor = calcConductor;
     }
     ApplicationContext ctx;
+    CalcConductor calcConductor;
 
     @Override
     public void handle(ChatState state, Update update) {
         if(!update.hasMessage())  {state.getMode().getNotChoose(state);return;}
-        validatePoints(update.getMessage().getText(), state);
+        validatePoints(update.getMessage().getText(), state, calcConductor);
     }
 }
