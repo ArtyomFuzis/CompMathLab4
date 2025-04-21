@@ -42,7 +42,7 @@ public interface ResponseMethod
             ys.add(scn2.nextDouble());
         }
         if(xs.size() != ys.size()){ state.getMode().getPointsWrongRowsLength(state);return;}
-        if(xs_check.size() != xs.size()) {state.getMode().getPointsSimlarPoints(state);return;}
+        if(xs_check.size() != xs.size()) {state.getMode().getPointsSimularPoints(state);return;}
         state.getMode().getPointsAccepted(state);
     }
 }

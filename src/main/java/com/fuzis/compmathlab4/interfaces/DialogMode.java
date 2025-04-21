@@ -1,10 +1,6 @@
 package com.fuzis.compmathlab4.interfaces;
 
-import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-
-import java.util.List;
 
 public interface DialogMode
 {
@@ -28,7 +24,7 @@ public interface DialogMode
 
     void getPointsBadFile(ChatState state);
 
-    void getPointsSimlarPoints(ChatState state);
+    void getPointsSimularPoints(ChatState state);
 
     enum CallBacks {
         START_CALC,
