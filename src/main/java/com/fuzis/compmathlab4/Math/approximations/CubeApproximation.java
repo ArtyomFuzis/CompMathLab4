@@ -4,11 +4,12 @@ import com.fuzis.compmathlab4.interfaces.MathApproximation;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class CubeApproximation implements MathApproximation {
     @Override
-    public double[][] preSolve(double[] xs, double[] ys) {
+    public ApproxRes preSolve(double[] xs, double[] ys) {
         double sx = Arrays.stream(xs).sum();
         double sy = Arrays.stream(ys).sum();
         double sxx = Arrays.stream(xs).map(x->x*x).sum();
@@ -25,18 +26,18 @@ public class CubeApproximation implements MathApproximation {
             sxxy += xs[i]*xs[i]*ys[i];
             sxxxy += xs[i]*xs[i]*xs[i]*ys[i];
         }
-        return new double[][]{
+        return new ApproxRes(new double[][]{
                 {n, sx, sxx, sxxx, sy},
                 {sx, sxx, sxxx, sxxxx, sxy},
                 {sxx, sxxx, sxxxx, sxxxxx, sxxy},
                 {sxxx, sxxxx, sxxxxx, sxxxxxx, sxxxy},
 
-        };
+        }, Arrays.stream(xs).boxed().toList(), Arrays.stream(ys).boxed().toList());
     }
 
     @Override
-    public double[] applyFunc(double[] xs, double[] ks) {
-        return Arrays.stream(xs).map(x->ks[0]+ks[1]*x+ks[2]*x*x+ks[3]*x*x*x).toArray();
+    public List<Double> applyFunc(List<Double> xs, double[] ks) {
+        return xs.stream().map(x->ks[0]+ks[1]*x+ks[2]*x*x+ks[3]*x*x*x).toList();
     }
 
 }

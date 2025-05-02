@@ -4,9 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.IntStream;
 
 @Service
 public class Utils {
@@ -45,5 +44,14 @@ public class Utils {
             }
         }
         return pre.toString();
+    }
+    public record Pair<T,S>(T a, S b){ }
+    public <T,S> List<Pair<T, S>> zipCollections(List<T> a, List<S> b){
+        return IntStream
+                .range(0, Math.min(a.size(), b.size()))
+                .mapToObj(i -> new Pair<>(a.get(i), b.get(i))).toList();
+    }
+    public <T,S> List<Pair<T, S>> zipCollections(T[] a, S[] b){
+        return zipCollections(Arrays.stream(a).toList(), Arrays.stream(b).toList());
     }
 }

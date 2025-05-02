@@ -6,6 +6,7 @@ import com.fuzis.compmathlab4.Math.Approxes;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class AnimeMode implements DialogMode {
@@ -127,12 +128,13 @@ public class AnimeMode implements DialogMode {
     }
 
     @Override
-    public void getReportPearson(double res,ChatState state) {
+    public void getReportPearson(double res, ChatState state) {
         String comment;
-        if(res < 0.3) comment = "слабоватенько";
-        else if(res < 0.5) comment = "все равно с слабо";
-        else if(res < 0.7) comment = "чуть сильней, чем слабо";
-        else if(res < 0.9) comment = "связь неплоха";
+        double ares = Math.abs(res);
+        if(ares < 0.3) comment = "слабоватенько";
+        else if(ares < 0.5) comment = "все равно с слабо";
+        else if(ares < 0.7) comment = "чуть сильней, чем слабо";
+        else if(ares < 0.9) comment = "связь неплоха";
         else comment = "связь большая";
         bot.sendMessage("Пирсон: " + res+" - " +comment, state);
     }
@@ -169,4 +171,18 @@ public class AnimeMode implements DialogMode {
     public void getMakeSwitch(ChatState state) {
         bot.sendMessage("Уряяяя, ты выбрал правильную сторону! ☆*: .｡. o(≧▽≦)o .｡.:*☆", state);
     }
+
+    @Override
+    public void getMeme(ChatState state) {
+        bot.sendRandomPhoto("memes\\",state);
+        bot.sendMessage("Мемчик!!!", state);
+    }
+
+
+    @Override
+    public void getDecreaseSocialCredits(ChatState state, Update update) {
+        Integer change = update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/memes") ? 10: 1;
+        bot.increaseStat(state, update, change);
+    }
+
 }

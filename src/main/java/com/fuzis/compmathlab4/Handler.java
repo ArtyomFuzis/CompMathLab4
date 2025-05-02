@@ -32,6 +32,12 @@ public class Handler
             var state = userStates.get(chatId);
             userStates.put(chatId, new ChatState(state.getMode(), ctx.getBean(StartHandler.class), chatId));
         }
+        else if(update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/memes")){
+            var state = userStates.get(chatId);
+            state.getMode().getMeme(state);
+            state.getMode().getDecreaseSocialCredits(state, update);
+            return;
+        }
         ChatState state = userStates.get(chatId);
         state.getMeth().handle(state, update);
     }

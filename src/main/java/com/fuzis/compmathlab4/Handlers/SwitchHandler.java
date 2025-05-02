@@ -48,6 +48,7 @@ public class SwitchHandler implements ResponseMethod
                         state.setMode(ctx.getBean(CommunismMode.class));
                     } else {
                         state.setMode(ctx.getBean(AnimeMode.class));
+                        state.getMode().getDecreaseSocialCredits(state, update);
                     }
                     state.getMode().getMakeSwitch(state);
                     state.setMeth(ctx.getBean(StartResponseHandler.class));

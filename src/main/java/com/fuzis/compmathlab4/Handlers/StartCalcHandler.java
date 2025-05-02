@@ -31,7 +31,10 @@ public class StartCalcHandler implements ResponseMethod {
                 state.setMeth(ctx.getBean(PointsEntryFileHandler.class));
                 state.getMode().getPointsEntryFile(state);
             }
-            case null, default ->  state.getMode().getNotChoose(state);
+            case null, default ->  {
+                state.getMode().getDecreaseSocialCredits(state, update);
+                state.getMode().getNotChoose(state);
+            }
         };
     }
 }

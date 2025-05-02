@@ -2,6 +2,7 @@ package com.fuzis.compmathlab4.interfaces;
 
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.Math.Approxes;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface DialogMode
 {
@@ -30,7 +31,7 @@ public interface DialogMode
 
     void getReportTitle(Approxes el, ChatState state);
 
-    void getReportPearson(double res,ChatState state);
+    void getReportPearson(double res, ChatState state);
 
     void getReportRS(double res, ChatState state);
 
@@ -38,6 +39,10 @@ public interface DialogMode
     void getReportEnd(ChatState state);
 
     void getMakeSwitch(ChatState state);
+
+    void getMeme(ChatState state);
+
+    void getDecreaseSocialCredits(ChatState state, Update update);
 
     enum CallBacks {
         START_CALC,

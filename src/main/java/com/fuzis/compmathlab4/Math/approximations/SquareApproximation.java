@@ -4,11 +4,12 @@ import com.fuzis.compmathlab4.interfaces.MathApproximation;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class SquareApproximation implements MathApproximation {
     @Override
-    public double[][] preSolve(double[] xs, double[] ys) {
+    public ApproxRes preSolve(double[] xs, double[] ys) {
         double sx = Arrays.stream(xs).sum();
         double sy = Arrays.stream(ys).sum();
         double sxx = Arrays.stream(xs).map(x->x*x).sum();
@@ -21,11 +22,11 @@ public class SquareApproximation implements MathApproximation {
             sxy += xs[i]*ys[i];
             sxxy += xs[i]*xs[i]*ys[i];
         }
-        return new double[][]{{n, sx, sxx, sy}, {sx, sxx, sxxx, sxy}, {sxx, sxxx, sxxxx, sxxy}};
+        return new ApproxRes(new double[][]{{n, sx, sxx, sy}, {sx, sxx, sxxx, sxy}, {sxx, sxxx, sxxxx, sxxy}}, Arrays.stream(xs).boxed().toList(), Arrays.stream(ys).boxed().toList());
     }
 
     @Override
-    public double[] applyFunc(double[] xs, double[] ks) {
-        return Arrays.stream(xs).map(x->ks[0]+ks[1]*x+ks[2]*x*x).toArray();
+    public List<Double> applyFunc(List<Double> xs, double[] ks) {
+        return xs.stream().map(x->ks[0]+ks[1]*x+ks[2]*x*x).toList();
     }
 }

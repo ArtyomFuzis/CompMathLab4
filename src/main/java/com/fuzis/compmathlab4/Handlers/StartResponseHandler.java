@@ -32,7 +32,10 @@ public class StartResponseHandler implements ResponseMethod
                 state.setMeth(ctx.getBean(SwitchHandler.class));
                 state.getMode().getSwitchMode(state);
             }
-            case null, default -> state.getMode().getNotChoose(state);
+            case null, default -> {
+                state.getMode().getDecreaseSocialCredits(state, update);
+                state.getMode().getNotChoose(state);
+            }
         };
     }
 }

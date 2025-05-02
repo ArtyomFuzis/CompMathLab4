@@ -22,12 +22,13 @@ public interface ResponseMethod
             return null;
         }
     }
-    default void validatePoints(String input, ChatState state, CalcConductor calcConductor, ApplicationContext ctx){
+    default void validatePoints(String input, ChatState state, CalcConductor calcConductor, ApplicationContext ctx, Update update){
         var rows = input.trim().split("\n");
-        if(rows.length != 2){ state.getMode().getPointsWrongRowsSize(state);return;}
+        if(rows.length != 2){ state.getMode().getPointsWrongRowsSize(state);state.getMode().getDecreaseSocialCredits(state, update);return;}
         for(var row : rows){
-            if(!row.matches("^\\s*(?:\\d+(?:[.,]\\d+)?\\s+){7,11}\\d+(?:[.,]\\d+)?\\s*$")){
+            if(!row.matches("^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+){7,11}-?\\d+(?:[.,]\\d+)?\\s*$")){
                 state.getMode().getPointsValidateError(state);
+                state.getMode().getDecreaseSocialCredits(state, update);
                 return;
             }
         }
@@ -44,11 +45,10 @@ public interface ResponseMethod
         while(scn2.hasNextDouble()){
             ys.add(scn2.nextDouble());
         }
-        if(xs.size() != ys.size()){ state.getMode().getPointsWrongRowsLength(state);return;}
-        if(xs_check.size() != xs.size()) {state.getMode().getPointsSimularPoints(state);return;}
+        if(xs.size() != ys.size()){ state.getMode().getPointsWrongRowsLength(state);state.getMode().getDecreaseSocialCredits(state, update);return;}
+        if(xs_check.size() != xs.size()) {state.getMode().getPointsSimularPoints(state);state.getMode().getDecreaseSocialCredits(state, update);return;}
         calcConductor.startCalculations(xs.stream().mapToDouble(x -> x).toArray(), ys.stream().mapToDouble(x -> x).toArray(), state);
         state.getMode().getPointsAccepted(state);
-        state.getMode().getStartMessage(state);
         state.setMeth(ctx.getBean(StartHandler.class));
     }
 }

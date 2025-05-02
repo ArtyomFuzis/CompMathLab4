@@ -6,6 +6,13 @@ spring:
     port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:h2:file:./1
+    driverClassName: org.h2.Driver
 
 bot:
   name:  ${BOT_NAME}

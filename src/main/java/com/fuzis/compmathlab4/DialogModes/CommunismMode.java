@@ -2,24 +2,32 @@ package com.fuzis.compmathlab4.DialogModes;
 
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.Entities.UserStat;
 import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.Repos.StatRepo;
+import com.fuzis.compmathlab4.Utils;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
 @Component
 public class CommunismMode implements DialogMode {
     @Autowired
-    public CommunismMode(CommunismKeyboard board, Bot bot) {
+    public CommunismMode(CommunismKeyboard board, Bot bot, StatRepo repo, Utils utils) {
         this.board = board;
         this.bot = bot;
+        this.repo = repo;
+        this.utils = utils;
     }
     Bot bot;
     CommunismKeyboard board;
+    StatRepo repo;
+    Utils utils;
     private void sendCommunismPhoto(String subCategory, ChatState state){
         this.bot.sendRandomPhoto("soviet\\"+subCategory, state);
     }
@@ -27,6 +35,24 @@ public class CommunismMode implements DialogMode {
     public void getStartMessage(ChatState state) {
         sendCommunismPhoto("greeting", state);
         bot.sendMessage("Здравствуйте, товарищ! Что вы хотите сделать?\n<s><b>Товарищ майор уже следит за вами</b></s>", state, board.getStartKeyBoard());
+        List<UserStat> shame = repo.getUserStatsByStatBefore(-4);
+        StringBuilder shame_board = new StringBuilder();
+        shame_board.append("<b>ДОСКА ПОЗОРА</b>\n<pre>");
+        shame_board.append("Абонент:   Социальный рейтинг:\n");
+        for(UserStat u : shame){
+            shame_board.append(utils.getNSymbols(u.getUserName(), 8)).append("   ").append(u.getStat()).append("\n");
+        }
+        shame_board.append("</pre>");
+        if(!shame.isEmpty()) bot.sendMessage(shame_board.toString(), state);
+        List<UserStat> regarding = repo.getUserStatsByStatAfter(5);
+        StringBuilder regarding_board = new StringBuilder();
+        regarding_board.append("<b>ДОСКА ПОЧЕТА</b>\n<pre>");
+        regarding_board.append("Абонент:   Социальный рейтинг:\n");
+        for(UserStat u : regarding){
+            regarding_board.append(utils.getNSymbols(u.getUserName(), 8)).append("   ").append(u.getStat()).append("\n");
+        }
+        regarding_board.append("</pre>");
+        if(!regarding.isEmpty()) bot.sendMessage(regarding_board.toString(), state);
     }
 
     @Override
@@ -134,12 +160,13 @@ public class CommunismMode implements DialogMode {
     }
 
     @Override
-    public void getReportPearson(double res,ChatState state) {
+    public void getReportPearson(double res, ChatState state) {
         String comment;
-        if(res < 0.3) comment = "связь слабее даже союзников третьего рейха";
-        else if(res < 0.5) comment = "связь умеренная (такая же умеренная, как и враги народа)";
-        else if(res < 0.7) comment = "связь заметная (измерима штангенциркулем)";
-        else if(res < 0.9) comment = "связь высока (как Останкинская телебашня)";
+        double ares = Math.abs(res);
+        if(ares < 0.3) comment = "связь слабее даже союзников третьего рейха";
+        else if(ares < 0.5) comment = "связь умеренная (такая же умеренная, как и враги народа)";
+        else if(ares < 0.7) comment = "связь заметная (измерима штангенциркулем)";
+        else if(ares < 0.9) comment = "связь высока (как Останкинская телебашня)";
         else comment = "связь очень высока, как и ваша верность партии";
         bot.sendMessage("Коэффициент Пирсона: " + res+" - " +comment, state);
     }
@@ -175,5 +202,21 @@ public class CommunismMode implements DialogMode {
     @Override
     public void getMakeSwitch(ChatState state) {
         bot.sendMessage("Товарищ, вы таки соизволили вернуться. Не забудьте занести явку с повинной в следственный комитет по месту жительства.", state);
+    }
+    @Override
+    public void getMeme(ChatState state) {
+        bot.sendRandomPhoto("memes\\",state);
+        bot.sendMessage("Это что?!", state);
+    }
+
+
+    @Override
+    public void getDecreaseSocialCredits(ChatState state, Update update) {
+        Integer change = update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/memes") ? -10: -1;
+        Integer res = bot.increaseStat(state, update, change);
+        if(res == -5){
+            sendCommunismPhoto("validate", state);
+            bot.sendMessage("Хватит испытывать терпении партии, отныне вы на <b>доске позора!</b>", state);
+        }
     }
 }

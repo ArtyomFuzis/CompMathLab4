@@ -1,28 +1,42 @@
 package com.fuzis.compmathlab4.Math.approximations;
 
+import com.fuzis.compmathlab4.Utils;
 import com.fuzis.compmathlab4.interfaces.MathApproximation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class ExpApproximation implements MathApproximation {
+    @Autowired
+    public ExpApproximation(Utils utils) {
+        this.utils = utils;
+    }
+    Utils utils;
     @Override
-    public double[][] preSolve(double[] xs, double[] ys) {
-        double sx = Arrays.stream(xs).sum();
-        double sy = Arrays.stream(ys).map(Math::log).sum();
-        double sxx = Arrays.stream(xs).map(x->x*x).sum();
+    public ApproxRes preSolve(double[] preXs, double[] preYs) {
+        var zipped = utils.zipCollections(Arrays.stream(preXs).boxed().toList(), Arrays.stream(preYs).boxed().toList());
+        var fZipped = zipped.stream().filter(z -> z.b() > 0).toList();
+        if(fZipped.isEmpty())return new ApproxRes();
+        var xs = fZipped.stream().map(Utils.Pair::a).toList();
+        var ys = fZipped.stream().map(Utils.Pair::b).toList();
+        double sx = xs.stream().reduce(Double::sum).get();;
+        double sy = ys.stream().map(Math::log).reduce(Double::sum).get();
+        double sxx = xs.stream().map(x->x*x).reduce(Double::sum).get();
         double sxy = 0;
-        int n = xs.length;
+        int n = xs.size();
         for(int i=0; i<n; i++){
-            sxy += xs[i]*Math.log(ys[i]);
+            sxy += xs.get(i)*Math.log(ys.get(i));
         }
-        return new double[][]{{n, sx, sy}, {sx, sxx, sxy}};
+        return new ApproxRes(new double[][]{{n, sx, sy}, {sx, sxx, sxy}}, xs, ys);
     }
 
     @Override
-    public double[] applyFunc(double[] xs, double[] ks) {
-        return Arrays.stream(xs).map(x->Math.exp(x*ks[1])*Math.exp(ks[0])).toArray();
+    public List<Double> applyFunc(List<Double> xs, double[] ks) {
+        return xs.stream().map(x->Math.exp(x*ks[1])*Math.exp(ks[0])).toList();
     }
 
 }

@@ -1,7 +1,18 @@
 package com.fuzis.compmathlab4.interfaces;
 
-public interface MathApproximation
-{
-    double[][] preSolve(double[] xs, double[] ys);
-    double[] applyFunc(double[] xs, double[] ks);
+import java.util.List;
+
+public interface MathApproximation {
+    ApproxRes preSolve(double[] xs, double[] ys);
+
+    List<Double> applyFunc(List<Double> xs, double[] ks);
+
+    record ApproxRes(boolean present, double[][] res, List<Double> xs, List<Double> ys){
+        public ApproxRes(){
+            this(false, null, null, null);
+        }
+        public ApproxRes(double[][] res, List<Double> xs, List<Double> ys){
+            this(true, res, xs, ys);
+        }
+    }
 }

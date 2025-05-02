@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class CalcConductor
@@ -38,10 +39,18 @@ public class CalcConductor
     public final ApplicationContext ctx;
     public HashMap<Approxes, MathApproximation> approxes;
     public void startCalculations(double[] xs, double[] ys, ChatState state){
+        setCalcData(state.getChatId(), new CalcData(new HashMap<>(), new HashMap<>(), new HashMap<>(), state, new HashMap<>(), new CalcData.Counter(0)));
         for(var el : approxes.keySet()){
-            setCalcData(state.getChatId(), new CalcData(xs, ys, new HashMap<>(), state, new HashMap<>(), new CalcData.Counter(0)));
-            double[][] solveRequest = approxes.get(el).preSolve(xs,ys);
-            msgService.send_to_solve(new MessageToSolve(solveRequest), state.getChatId(), el);
+            CalcData calcData = getCalcData(state.getChatId());
+            var res = approxes.get(el).preSolve(xs,ys);
+            if(res.present()) {
+                double[][] solveRequest = res.res();
+                calcData.xs().put(el,res.xs());
+                calcData.ys().put(el,res.ys());
+                msgService.send_to_solve(new MessageToSolve(solveRequest), state.getChatId(), el);
+            } else{
+                incrementGraphCount(state.getChatId());
+            }
         }
     }
     public synchronized void setCalcData(Long chatId, CalcData calcData){
@@ -61,7 +70,7 @@ public class CalcConductor
     public void continueCalculations(double[] ks, Long chatId, Approxes approx){
         CalcData calcData = getCalcData(chatId);
         calcData.ks().put(approx, ks);
-        msgService.send_to_graph(new MessageToGraph(approx, calcData.xs(), calcData.ys(), ks, chatId), chatId, approx);
+        msgService.send_to_graph(new MessageToGraph(approx, calcData.xs().get(approx), calcData.ys().get(approx), ks, chatId), chatId, approx);
     }
     public synchronized void loadGraph(String uuid, Approxes approx, Long chatId){
         CalcData calcData = dataStore.get(chatId);
@@ -73,12 +82,12 @@ public class CalcConductor
         calcData.state().getMode().getReportGot(calcData.state());
         Approxes max_approx = Approxes.Linear;
         double RS_MAX = 0;
-        for(var el : approxes.keySet()){
+        for(var el : calcData.graphs().keySet()){
             calcData.state().getMode().getReportTitle(el, calcData.state());
-            double[] phis = approxes.get(el).applyFunc(calcData.xs(), calcData.ks().get(el));
-            format.sendTable(calcData.state(), calcData.xs(), calcData.ys(), phis, calcData.graphs().get(el));
-            if(el == Approxes.Linear) format.sendPearson(calcData.state(), calcData.xs(), calcData.ys());
-            double RS = format.sendRS(calcData.state(), calcData.ys(), phis);
+            List<Double> phis = approxes.get(el).applyFunc(calcData.xs().get(el), calcData.ks().get(el));
+            format.sendTable(calcData.state(), calcData.xs().get(el), calcData.ys().get(el), phis, calcData.graphs().get(el));
+            if(el == Approxes.Linear) format.sendPearson(calcData.state(), calcData.xs().get(el), calcData.ys().get(el));
+            double RS = format.sendRS(calcData.state(), calcData.ys().get(el), phis);
             if(RS > RS_MAX) {
                 RS_MAX = RS;
                 max_approx = el;
