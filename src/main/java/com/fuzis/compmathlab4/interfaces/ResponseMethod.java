@@ -25,7 +25,7 @@ public interface ResponseMethod
         }
     }
     default void validatePointsAndSendLAB4(String input, ChatState state, CalcConductor calcConductor, ApplicationContext ctx, Update update){
-        var res = validate(input, state, update);
+        var res = validate(input, state, update, true);
         if(res == null)return;
         var xs = res.xs;
         var ys = res.ys;
@@ -34,7 +34,7 @@ public interface ResponseMethod
         state.setMeth(ctx.getBean(StartHandler.class));
     }
     default void validatePointsAndSendLAB5(String input, ChatState state, Calculator calc, ApplicationContext ctx, Update update){
-        var res = validate(input, state, update);
+        var res = validate(input, state, update, false);
         if(res == null)return;
         var xs = res.xs;
         var ys = res.ys;
@@ -42,11 +42,12 @@ public interface ResponseMethod
         state.getMode().getPointsAccepted(state);
         state.setMeth(ctx.getBean(StartHandler.class));
     }
-    default Points validate(String input, ChatState state, Update update){
+    default Points validate(String input, ChatState state, Update update, boolean cntValidate){
         var rows = input.trim().split("\n");
+        var regex = cntValidate ? "^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+){7,11}-?\\d+(?:[.,]\\d+)?\\s*$" : "^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+)*-?\\d+(?:[.,]\\d+)?\\s*$";
         if(rows.length != 2){ state.getMode().getPointsWrongRowsSize(state);state.getMode().getDecreaseSocialCredits(state, update);return null;}
         for(var row : rows){
-            if(!row.matches("^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+){7,11}-?\\d+(?:[.,]\\d+)?\\s*$")){
+            if(!row.matches(regex)){
                 state.getMode().getPointsValidateError(state);
                 state.getMode().getDecreaseSocialCredits(state, update);
                 return null;
