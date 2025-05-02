@@ -1,4 +1,4 @@
-package com.fuzis.compmathlab4.Math;
+package com.fuzis.compmathlab4.MathLAB4;
 
 public enum Approxes {
     Linear,

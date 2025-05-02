@@ -3,7 +3,7 @@ package com.fuzis.compmathlab4.Messaging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.MathLAB4.Approxes;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToSolve;
 import org.slf4j.Logger;

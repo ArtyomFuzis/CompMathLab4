@@ -1,6 +1,6 @@
 package com.fuzis.compmathlab4.Data;
 
-import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.MathLAB4.Approxes;
 
 import java.util.HashMap;
 import java.util.List;

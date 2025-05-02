@@ -2,7 +2,7 @@ package com.fuzis.compmathlab4.Handlers;
 
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
-import com.fuzis.compmathlab4.Math.CalcConductor;
+import com.fuzis.compmathlab4.MathLAB4.CalcConductor;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,12 +14,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Collections;
 
 @Component
-public class PointsEntryFileHandler implements ResponseMethod {
+public class PointsEntryFileHandlerLAB4 implements ResponseMethod {
     @Autowired
-    public PointsEntryFileHandler(ApplicationContext ctx, Bot bot, CalcConductor calcConductor) {
+    public PointsEntryFileHandlerLAB4(ApplicationContext ctx, Bot bot, CalcConductor calcConductor) {
         this.ctx = ctx;
         this.bot = bot;
         this.calcConductor = calcConductor;
@@ -36,7 +35,7 @@ public class PointsEntryFileHandler implements ResponseMethod {
         try {
             String filePath = bot.execute(getFile).getFilePath();
             File res = bot.downloadFile(filePath);
-            validatePoints(String.join("\n", Files.readAllLines(res.toPath())), state, calcConductor, ctx, update);
+            validatePointsAndSendLAB4(String.join("\n", Files.readAllLines(res.toPath())), state, calcConductor, ctx, update);
         }
         catch (TelegramApiException | IOException e){
             state.getMode().getPointsBadFile(state);

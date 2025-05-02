@@ -2,7 +2,7 @@ package com.fuzis.compmathlab4.DialogModes;
 
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
-import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.MathLAB4.Approxes;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,9 +33,30 @@ public class AnimeMode implements DialogMode {
     }
 
     @Override
-    public void getStartCalculations(ChatState state) {
+    public void getStartCalculationsLAB4(ChatState state) {
         sendAnimePhoto("enter", state);
-        bot.sendMessage("Документы с собой? (●'◡'●)", state, board.getInputTypeKeyBoard());
+        bot.sendMessage("Документы с собой? (●'◡'●)", state, board.getInputTypeLAB4KeyBoard());
+    }
+    @Override
+    public void getStartCalculationsLAB5(ChatState state) {
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Файлик аль функция?", state, board.getInputTypeLAB5KeyBoard());
+    }
+    @Override
+    public void getPointsEntryFunc(ChatState state) {
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Ну и выбирай, с форматом ввода сам разберешься:", state);
+    }
+
+    @Override
+    public void getWrongBordersChoose(ChatState state) {
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Границы кажись немного... Перевернутые....", state);
+    }
+
+    @Override
+    public void getPointsFound(ChatState state) {
+        bot.sendMessage("Точечьки:", state);
     }
 
     @Override
@@ -183,6 +204,12 @@ public class AnimeMode implements DialogMode {
     public void getDecreaseSocialCredits(ChatState state, Update update) {
         Integer change = update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/memes") ? 10: 1;
         bot.increaseStat(state, update, change);
+    }
+
+    @Override
+    public void getBadChoose(ChatState state){
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Что это за чиселко то такое (номер функции)?!", state);
     }
 
 }

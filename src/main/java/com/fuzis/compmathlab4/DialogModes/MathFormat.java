@@ -2,6 +2,7 @@ package com.fuzis.compmathlab4.DialogModes;
 
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.MathLAB5.FuncEntry;
 import com.fuzis.compmathlab4.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,10 +14,12 @@ import java.util.List;
 public class MathFormat
 {
     @Autowired
-    public MathFormat(Utils utils, Bot bot){
+    public MathFormat(Utils utils, Bot bot, FuncEntry funcEntry){
         this.utils = utils;
         this.bot = bot;
+        this.funcEntry = funcEntry;
     }
+    FuncEntry funcEntry;
     Utils utils;
     Bot bot;
     public void sendTable(ChatState state, List<Double> xs, List<Double> ys, List<Double> phis, String graphUUID){
@@ -68,5 +71,27 @@ public class MathFormat
         double res = 1 - sum1 / sum2;
         state.getMode().getReportRS(res,state);
         return res;
+    }
+    public void sendFuncVariants(ChatState state){
+        StringBuilder sb = new StringBuilder();
+        int cntr = 1;
+        for(var el : funcEntry.mathFunctions){
+            sb.append(cntr++);
+            sb.append(") ");
+            sb.append(el.getStringRepr());
+            sb.append("\n");
+        }
+        bot.sendMessage("<pre>"+ sb +"</pre>",state);
+    }
+    public void sendTableXY(ChatState state, List<Double> xs, List<Double> ys){
+        int n  = xs.size();
+        StringBuilder builder = new StringBuilder();
+        builder.append("x:  ");
+        for (double x : xs) builder.append("|").append(utils.getNSymbols(x, 8));
+        builder.append("|\n");
+        builder.append("y:  ");
+        for (double x : ys) builder.append("|").append(utils.getNSymbols(x, 8));
+        builder.append("|\n");
+        bot.sendMessage("<pre>"+ builder +"</pre>",state);
     }
 }

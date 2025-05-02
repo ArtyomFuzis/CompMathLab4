@@ -3,14 +3,12 @@ package com.fuzis.compmathlab4.DialogModes;
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.Entities.UserStat;
-import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.MathLAB4.Approxes;
 import com.fuzis.compmathlab4.Repos.StatRepo;
 import com.fuzis.compmathlab4.Utils;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -63,9 +61,31 @@ public class CommunismMode implements DialogMode {
     }
 
     @Override
-    public void getStartCalculations(ChatState state) {
+    public void getStartCalculationsLAB4(ChatState state) {
         sendCommunismPhoto("enter", state);
-        bot.sendMessage("Пожалуйста, товарищ, выберите какой метод ввода вы хотите использовать:", state, board.getInputTypeKeyBoard());
+        bot.sendMessage("Пожалуйста, товарищ, выберите какой метод ввода вы хотите использовать:", state, board.getInputTypeKeyBoardLAB4());
+    }
+    @Override
+    public void getStartCalculationsLAB5(ChatState state) {
+        sendCommunismPhoto("enter", state);
+        bot.sendMessage("Пожалуйста, товарищ, выберите какой метод ввода вы хотите использовать:", state, board.getInputTypeKeyBoardLAB5());
+    }
+
+    @Override
+    public void getPointsEntryFunc(ChatState state) {
+        sendCommunismPhoto("enter", state);
+        bot.sendMessage("Теперь, пожалуйста, выберите функцию, которую вы хотите использовать для ввода точек. Формат ввода: [номер функции] [левая граница] [правая граница] [кол-во точек]", state);
+    }
+
+    @Override
+    public void getWrongBordersChoose(ChatState state) {
+        sendCommunismPhoto("validate", state);
+        bot.sendMessage("Левая граница больше или равна правой, как так, товарищ?!", state);
+    }
+
+    @Override
+    public void getPointsFound(ChatState state) {
+        bot.sendMessage("Сгенерированные точки:", state);
     }
 
     @Override
@@ -214,9 +234,14 @@ public class CommunismMode implements DialogMode {
     public void getDecreaseSocialCredits(ChatState state, Update update) {
         Integer change = update.hasMessage()&&update.getMessage().hasText()&&update.getMessage().getText().trim().equals("/memes") ? -10: -1;
         Integer res = bot.increaseStat(state, update, change);
-        if(res == -5){
+        if(res <= -5){
             sendCommunismPhoto("validate", state);
             bot.sendMessage("Хватит испытывать терпении партии, отныне вы на <b>доске позора!</b>", state);
         }
+    }
+    @Override
+    public void getBadChoose(ChatState state){
+        sendCommunismPhoto("validate", state);
+        bot.sendMessage("Недопустимый номер функции", state);
     }
 }

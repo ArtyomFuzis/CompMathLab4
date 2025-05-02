@@ -1,14 +1,14 @@
 package com.fuzis.compmathlab4.interfaces;
 
 import com.fuzis.compmathlab4.Data.ChatState;
-import com.fuzis.compmathlab4.Math.Approxes;
+import com.fuzis.compmathlab4.MathLAB4.Approxes;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface DialogMode
 {
     void getStartMessage(ChatState state);
     void getNotChoose(ChatState state);
-    void getStartCalculations(ChatState state);
+    void getStartCalculationsLAB4(ChatState state);
     void getSwitchMode(ChatState state);
     void getBroken(ChatState state);
     void getSwitchCancelled(ChatState state);
@@ -41,14 +41,20 @@ public interface DialogMode
     void getMakeSwitch(ChatState state);
 
     void getMeme(ChatState state);
-
+    void getBadChoose(ChatState state);
     void getDecreaseSocialCredits(ChatState state, Update update);
+    void getStartCalculationsLAB5(ChatState state);
+    void getPointsEntryFunc(ChatState state);
+
+    void getWrongBordersChoose(ChatState state);
+
+    void getPointsFound(ChatState state);
 
     enum CallBacks {
-        START_CALC,
+        START_CALC_LAB4,
         SWITCH_MODE,
-        MANUALLY_WRITE,
-        SEND_FILE,
-        DO_SWITCH, CANCEL_SWITCH
+        MANUALLY_WRITE_LAB4,MANUALLY_WRITE_LAB5,
+        SEND_FILE_LAB4,SEND_FILE_LAB5,
+        DO_SWITCH, CANCEL_SWITCH,START_CALC_LAB5, FUNC_WRITE_LAB5
     }
 }

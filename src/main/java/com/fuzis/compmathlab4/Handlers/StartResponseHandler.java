@@ -5,11 +5,7 @@ import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.Collections;
-import java.util.List;
 
 @Component
 public class StartResponseHandler implements ResponseMethod
@@ -24,13 +20,17 @@ public class StartResponseHandler implements ResponseMethod
     @Override
     public void handle(ChatState state, Update update) {
         switch (callbackOnly(update)) {
-            case START_CALC -> {
-                state.setMeth(ctx.getBean(StartCalcHandler.class));
-                state.getMode().getStartCalculations(state);
+            case START_CALC_LAB4 -> {
+                state.setMeth(ctx.getBean(StartCalcHandlerLAB4.class));
+                state.getMode().getStartCalculationsLAB4(state);
             }
             case SWITCH_MODE -> {
                 state.setMeth(ctx.getBean(SwitchHandler.class));
                 state.getMode().getSwitchMode(state);
+            }
+            case START_CALC_LAB5 -> {
+                state.setMeth(ctx.getBean(StartCalcHandlerLAB5.class));
+                state.getMode().getStartCalculationsLAB5(state);
             }
             case null, default -> {
                 state.getMode().getDecreaseSocialCredits(state, update);

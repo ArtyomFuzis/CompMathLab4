@@ -1,4 +1,4 @@
-package com.fuzis.compmathlab4.Math.approximations;
+package com.fuzis.compmathlab4.MathLAB4.approximations;
 
 import com.fuzis.compmathlab4.interfaces.MathApproximation;
 import org.springframework.stereotype.Component;

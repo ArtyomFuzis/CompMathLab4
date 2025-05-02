@@ -11,14 +11,22 @@ public class CommunismKeyboard implements ModeKeyboard
 {
     public ReplyKeyboard getStartKeyBoard(){
         return  createSingleRowKeyboard(
-                new CallbackPair("Приступить к вычислениям", DialogMode.CallBacks.START_CALC),
+                new CallbackPair("Аппроксимация", DialogMode.CallBacks.START_CALC_LAB4),
+                new CallbackPair("Интерполяция", DialogMode.CallBacks.START_CALC_LAB5),
                 new CallbackPair("Motto kawaii desu?", DialogMode.CallBacks.SWITCH_MODE)
         );
     }
-    public ReplyKeyboard getInputTypeKeyBoard(){
+    public ReplyKeyboard getInputTypeKeyBoardLAB4(){
         return  createSingleRowKeyboard(
-                new CallbackPair("Я буду набирать вручную", DialogMode.CallBacks.MANUALLY_WRITE),
-                new CallbackPair("Я отправлю файл", DialogMode.CallBacks.SEND_FILE)
+                new CallbackPair("Я буду набирать вручную", DialogMode.CallBacks.MANUALLY_WRITE_LAB4),
+                new CallbackPair("Я отправлю файл", DialogMode.CallBacks.SEND_FILE_LAB4)
+        );
+    }
+    public ReplyKeyboard getInputTypeKeyBoardLAB5(){
+        return  createSingleRowKeyboard(
+                new CallbackPair("Я буду набирать вручную", DialogMode.CallBacks.MANUALLY_WRITE_LAB5),
+                new CallbackPair("Я отправлю файл", DialogMode.CallBacks.SEND_FILE_LAB5),
+                new CallbackPair("Я воспользуюсь функцией", DialogMode.CallBacks.FUNC_WRITE_LAB5)
         );
     }
     public ReplyKeyboard switchBoard(){

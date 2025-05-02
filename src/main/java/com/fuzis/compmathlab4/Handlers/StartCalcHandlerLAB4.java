@@ -5,17 +5,13 @@ import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Collections;
-import java.util.List;
-
 @Component
-public class StartCalcHandler implements ResponseMethod {
+public class StartCalcHandlerLAB4 implements ResponseMethod {
 
     @Autowired
-    public StartCalcHandler(ApplicationContext ctx) {
+    public StartCalcHandlerLAB4(ApplicationContext ctx) {
         this.ctx = ctx;
     }
     ApplicationContext ctx;
@@ -23,12 +19,12 @@ public class StartCalcHandler implements ResponseMethod {
     @Override
     public void handle(ChatState state, Update update) {
         switch (callbackOnly(update)) {
-            case MANUALLY_WRITE -> {
-                state.setMeth(ctx.getBean(PointsEntryHandler.class));
+            case MANUALLY_WRITE_LAB4 -> {
+                state.setMeth(ctx.getBean(PointsEntryHandlerLAB4.class));
                 state.getMode().getPointsEntry(state);
             }
-            case SEND_FILE -> {
-                state.setMeth(ctx.getBean(PointsEntryFileHandler.class));
+            case SEND_FILE_LAB4 -> {
+                state.setMeth(ctx.getBean(PointsEntryFileHandlerLAB4.class));
                 state.getMode().getPointsEntryFile(state);
             }
             case null, default ->  {

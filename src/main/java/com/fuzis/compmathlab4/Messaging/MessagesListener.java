@@ -3,8 +3,8 @@ package com.fuzis.compmathlab4.Messaging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fuzis.compmathlab4.Math.Approxes;
-import com.fuzis.compmathlab4.Math.CalcConductor;
+import com.fuzis.compmathlab4.MathLAB4.Approxes;
+import com.fuzis.compmathlab4.MathLAB4.CalcConductor;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageFromGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageResponse;
 import com.fuzis.compmathlab4.Utils;

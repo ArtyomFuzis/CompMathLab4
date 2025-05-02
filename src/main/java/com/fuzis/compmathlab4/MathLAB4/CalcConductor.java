@@ -1,10 +1,10 @@
-package com.fuzis.compmathlab4.Math;
+package com.fuzis.compmathlab4.MathLAB4;
 
 import com.fuzis.compmathlab4.Data.CalcData;
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.DialogModes.MathFormat;
 import com.fuzis.compmathlab4.Handlers.StartResponseHandler;
-import com.fuzis.compmathlab4.Math.approximations.*;
+import com.fuzis.compmathlab4.MathLAB4.approximations.*;
 import com.fuzis.compmathlab4.Messaging.MessageService;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToSolve;
