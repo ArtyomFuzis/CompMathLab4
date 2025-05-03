@@ -57,7 +57,7 @@ public class PointsEntryFuncHandlerLAB5 implements ResponseMethod {
                 state.getMode().getPointsFound(state);
                 mathFormat.sendTableXY(state, xs, ys);
                 state.getMode().getPointsAccepted(state);
-                calc.calculate(xs, ys, state);
+                calc.calculateStart(xs, ys, state);
                 state.setMeth(ctx.getBean(StartHandler.class));
             }
             catch(NumberFormatException e) {

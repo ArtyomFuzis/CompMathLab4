@@ -38,7 +38,7 @@ public interface ResponseMethod
         if(res == null)return;
         var xs = res.xs;
         var ys = res.ys;
-        calc.calculate(xs, ys, state);
+        calc.calculateStart(xs, ys, state);
         state.getMode().getPointsAccepted(state);
         state.setMeth(ctx.getBean(StartHandler.class));
     }
