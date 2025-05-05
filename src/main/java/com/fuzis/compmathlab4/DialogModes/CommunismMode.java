@@ -123,7 +123,7 @@ public class CommunismMode implements DialogMode {
             case Stirling -> "Стирлинга";
             case Bessel -> "Бесселя";
         };
-        bot.sendMessage("Вычисленное значение: " + xStr+"(метод "+method+")", state);
+        bot.sendMessage("Вычисленное значение: " + xStr+" (метод "+method+")", state);
     }
 
     @Override

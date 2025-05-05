@@ -94,7 +94,7 @@ public class AnimeMode implements DialogMode {
             case Stirling -> "Стирлинга";
             case Bessel -> "Бесселя";
         };
-        bot.sendMessage("Тут пришло значение: " + xStr+"(метод "+method+")", state);
+        bot.sendMessage("Тут пришло значение: " + xStr+" (метод "+method+")", state);
 
     }
 

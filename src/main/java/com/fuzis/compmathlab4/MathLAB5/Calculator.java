@@ -4,9 +4,7 @@ import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.DialogModes.MathFormat;
 import com.fuzis.compmathlab4.Handlers.StartHandler;
 import com.fuzis.compmathlab4.Handlers.XPointEntryHandler;
-import com.fuzis.compmathlab4.MathLAB5.Methods.Lagrange;
-import com.fuzis.compmathlab4.MathLAB5.Methods.NewtonDifference;
-import com.fuzis.compmathlab4.MathLAB5.Methods.NewtonFixed;
+import com.fuzis.compmathlab4.MathLAB5.Methods.*;
 import com.fuzis.compmathlab4.Messaging.MessageService;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
 import com.fuzis.compmathlab4.interfaces.InterpolationMethod;
@@ -23,13 +21,15 @@ public class Calculator {
     public Calculator(ApplicationContext ctx, MathFormat format,
                       Lagrange lagrangeMeth,
                       MessageService messageService,
-                      NewtonFixed newtonFixed, NewtonDifference newtonDifference) {
+                      NewtonFixed newtonFixed, NewtonDifference newtonDifference, Stirling stirling, Bessel bessel) {
         this.ctx = ctx;
         this.format = format;
         interpolations = new HashMap<>();
         interpolations.put(Interpolation.Lagrange, lagrangeMeth);
         interpolations.put(Interpolation.NewtonFixed, newtonFixed);
         interpolations.put(Interpolation.NewtonDifferent, newtonDifference);
+        interpolations.put(Interpolation.Stirling, stirling);
+        interpolations.put(Interpolation.Bessel, bessel);
         this.messageService = messageService;
     }
     public enum Interpolation{
