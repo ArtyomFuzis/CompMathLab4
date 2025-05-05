@@ -70,7 +70,7 @@ public class CalcConductor
     public void continueCalculations(double[] ks, Long chatId, Approxes approx){
         CalcData calcData = getCalcData(chatId);
         calcData.ks().put(approx, ks);
-        msgService.send_to_graph(new MessageToGraph(approx, calcData.xs().get(approx), calcData.ys().get(approx), ks, chatId), chatId, approx);
+        msgService.send_to_graphLAB4(new MessageToGraph(approx, calcData.xs().get(approx), calcData.ys().get(approx), ks, chatId), chatId, approx);
     }
     public synchronized void loadGraph(String uuid, Approxes approx, Long chatId){
         CalcData calcData = dataStore.get(chatId);

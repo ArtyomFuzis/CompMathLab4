@@ -3,6 +3,7 @@ package com.fuzis.compmathlab4.DialogModes;
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.MathLAB4.Approxes;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,44 @@ public class AnimeMode implements DialogMode {
     }
 
     @Override
+    public void getEnterX(ChatState state) {
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Иксик давай сюда!", state);
+    }
+
+    @Override
+    public void getPointsEntryLAB5(ChatState state) {
+        sendAnimePhoto("enter", state);
+        bot.sendMessage("Введи точки (иксики в первой строке, игрики во второй)", state);
+    }
+
+    @Override
+    public void getDifferentDifference(ChatState state) {
+        sendAnimePhoto("validate", state);
+        bot.sendMessage("Эта программка не поддерживает неравномерную сетку....", state);
+    }
+
+    @Override
+    public void getSumMatrix(ChatState state) {
+        sendAnimePhoto("report", state);
+        bot.sendMessage("Матрица конечных разностей:", state);
+    }
+
+    @Override
+    public void getResMethod(ChatState state, Double xVal, Calculator.Interpolation interpolation) {
+        String xStr = String.format("%.5f", xVal);
+        String method = switch (interpolation){
+            case Lagrange -> "Лагранжа";
+            case NewtonFixed -> "Ньютона для конечных сумм";
+            case NewtonDifferent -> "Ньютона для разностных сумм";
+            case Stirling -> "Стирлинга";
+            case Bessel -> "Бесселя";
+        };
+        bot.sendMessage("Тут пришло значение: " + xStr+"(метод "+method+")", state);
+
+    }
+
+    @Override
     public void getSwitchMode(ChatState state) {
         sendAnimePhoto("switch", state);
         bot.sendMessage("Ты... Ты правда уходишь?! ~_~", state, board.switchBoard());
@@ -76,7 +115,7 @@ public class AnimeMode implements DialogMode {
     }
 
     @Override
-    public void getPointsEntry(ChatState state) {
+    public void getPointsEntryLAB4(ChatState state) {
         sendAnimePhoto("enter", state);
         bot.sendMessage("Хорошо, но давай тогда две строки из 8-12 значений ^_-", state);
     }
@@ -144,6 +183,7 @@ public class AnimeMode implements DialogMode {
             case Log -> "логарифмик";
             case Exp -> "экспонента";
             case Pow -> "степень";
+            case None -> "None";
         };
         bot.sendMessage("ФунциNya: " + functype, state);
     }
@@ -179,6 +219,7 @@ public class AnimeMode implements DialogMode {
             case Log -> "логарифмик";
             case Exp -> "экспонента";
             case Pow -> "степень";
+            case None -> "None";
         };
         bot.sendMessage("Лучшая ФунциNya: " + functype, state);
     }

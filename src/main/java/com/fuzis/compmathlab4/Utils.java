@@ -54,4 +54,13 @@ public class Utils {
     public <T,S> List<Pair<T, S>> zipCollections(T[] a, S[] b){
         return zipCollections(Arrays.stream(a).toList(), Arrays.stream(b).toList());
     }
+    public static class firstComparatorDouble<Double, S> implements Comparator<Pair<Double, S>>{
+
+
+        @Override
+        public int compare(Pair<Double, S> o1, Pair<Double, S> o2) {
+            if(o1.a() == o2.a())return 0;
+            return ((double)o1.a() < (double)o2.a()) ? 1 : -1;
+        }
+    }
 }

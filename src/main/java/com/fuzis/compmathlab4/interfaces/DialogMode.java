@@ -2,6 +2,7 @@ package com.fuzis.compmathlab4.interfaces;
 
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.MathLAB4.Approxes;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface DialogMode
@@ -12,7 +13,7 @@ public interface DialogMode
     void getSwitchMode(ChatState state);
     void getBroken(ChatState state);
     void getSwitchCancelled(ChatState state);
-    void getPointsEntry(ChatState state);
+    void getPointsEntryLAB4(ChatState state);
     void getPointsValidateError(ChatState state);
     void getPointsWrongRowsSize(ChatState state);
 
@@ -49,6 +50,16 @@ public interface DialogMode
     void getWrongBordersChoose(ChatState state);
 
     void getPointsFound(ChatState state);
+
+    void getEnterX(ChatState state);
+
+    void getPointsEntryLAB5(ChatState state);
+
+    void getDifferentDifference(ChatState state);
+
+    void getSumMatrix(ChatState state);
+
+    void getResMethod(ChatState state, Double xVal, Calculator.Interpolation interpolation);
 
     enum CallBacks {
         START_CALC_LAB4,

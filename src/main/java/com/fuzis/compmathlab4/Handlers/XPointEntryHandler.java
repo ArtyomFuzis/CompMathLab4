@@ -1,29 +1,29 @@
 package com.fuzis.compmathlab4.Handlers;
 
 import com.fuzis.compmathlab4.Data.ChatState;
-import com.fuzis.compmathlab4.MathLAB4.CalcConductor;
-import com.fuzis.compmathlab4.Utils;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class PointsEntryHandlerLAB4 implements ResponseMethod
-{
+public class XPointEntryHandler implements ResponseMethod {
     @Autowired
-    public PointsEntryHandlerLAB4(Utils utils, ApplicationContext ctx, CalcConductor calcConductor) {
-        this.ctx = ctx;
-        this.calcConductor = calcConductor;
-        this.utils = utils;
+    public XPointEntryHandler(Calculator calc) {
+        this.calc = calc;
     }
-    ApplicationContext ctx;
-    CalcConductor calcConductor;
-    Utils utils;
+    Calculator calc;
+
     @Override
     public void handle(ChatState state, Update update) {
         if(!update.hasMessage() || !update.getMessage().hasText())  {state.getMode().getNotChoose(state);state.getMode().getDecreaseSocialCredits(state, update);return;}
-        validatePointsAndSendLAB4(utils, update.getMessage().getText(), state, calcConductor, ctx, update);
+        try{
+            double x = Double.parseDouble(update.getMessage().getText());
+            calc.calc(x, state);
+        }
+        catch(NumberFormatException e) {
+            state.getMode().getNotChoose(state);
+        }
     }
 }

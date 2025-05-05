@@ -56,9 +56,7 @@ public class PointsEntryFuncHandlerLAB5 implements ResponseMethod {
                 List<Double> ys = xs.stream().map(x -> funcEntry.mathFunctions.get(choice-1).getValue(x)).toList();
                 state.getMode().getPointsFound(state);
                 mathFormat.sendTableXY(state, xs, ys);
-                state.getMode().getPointsAccepted(state);
-                calc.calculateStart(xs, ys, state);
-                state.setMeth(ctx.getBean(StartHandler.class));
+                calc.calculateStart(xs, ys, state, true);
             }
             catch(NumberFormatException e) {
                 state.getMode().getPointsValidateError(state);

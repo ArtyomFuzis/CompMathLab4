@@ -3,6 +3,7 @@ package com.fuzis.compmathlab4.Handlers;
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.MathLAB5.Calculator;
+import com.fuzis.compmathlab4.Utils;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,14 +19,16 @@ import java.nio.file.Files;
 @Component
 public class PointsEntryFileHandlerLAB5 implements ResponseMethod {
     @Autowired
-    public PointsEntryFileHandlerLAB5(ApplicationContext ctx, Bot bot, Calculator calc) {
+    public PointsEntryFileHandlerLAB5(Utils utils, ApplicationContext ctx, Bot bot, Calculator calc) {
         this.ctx = ctx;
         this.bot = bot;
         this.calc = calc;
+        this.utils = utils;
     }
     ApplicationContext ctx;
     Bot bot;
     Calculator calc;
+    Utils utils;
     @Override
     public void handle(ChatState state, Update update) {
         if(!update.hasMessage()) {state.getMode().getNotChoose(state);return;}
@@ -35,7 +38,7 @@ public class PointsEntryFileHandlerLAB5 implements ResponseMethod {
         try {
             String filePath = bot.execute(getFile).getFilePath();
             File res = bot.downloadFile(filePath);
-            validatePointsAndSendLAB5(String.join("\n", Files.readAllLines(res.toPath())), state, calc, ctx, update);
+            validatePointsAndSendLAB5(utils, String.join("\n", Files.readAllLines(res.toPath())), state, calc, ctx, update);
         }
         catch (TelegramApiException | IOException e){
             state.getMode().getPointsBadFile(state);

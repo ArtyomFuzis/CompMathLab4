@@ -2,6 +2,7 @@ package com.fuzis.compmathlab4.DialogModes;
 
 import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.MathLAB5.FuncEntry;
 import com.fuzis.compmathlab4.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,6 @@ public class MathFormat
         bot.sendMessage("<pre>"+ sb +"</pre>",state);
     }
     public void sendTableXY(ChatState state, List<Double> xs, List<Double> ys){
-        int n  = xs.size();
         StringBuilder builder = new StringBuilder();
         builder.append("x:  ");
         for (double x : xs) builder.append("|").append(utils.getNSymbols(x, 8));
@@ -93,5 +93,21 @@ public class MathFormat
         for (double x : ys) builder.append("|").append(utils.getNSymbols(x, 8));
         builder.append("|\n");
         bot.sendMessage("<pre>"+ builder +"</pre>",state);
+    }
+
+    public void sendSumMatrix(ChatState state, double[][] deltas) {
+        int n = deltas.length;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < n ; i ++){
+            for(int j = 0; j < n-i; j++){
+                sb.append(utils.getNSymbols(deltas[i][j], 8)).append(" ");
+            }
+            sb.append("\n");
+        }
+        bot.sendMessage("<pre>"+ sb +"</pre>",state);
+    }
+    public void sendCalcLab5(Double x_val, String graphUUID, ChatState state, Calculator.Interpolation interpolation){
+        state.getMode().getResMethod(state, x_val, interpolation);
+        bot.sendGraph(graphUUID, state);
     }
 }

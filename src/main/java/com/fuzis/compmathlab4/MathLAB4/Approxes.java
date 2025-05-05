@@ -6,5 +6,6 @@ public enum Approxes {
     Cube,
     Log,
     Exp,
-    Pow
+    Pow,
+    None
 }

@@ -4,6 +4,7 @@ package com.fuzis.compmathlab4.Messaging;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fuzis.compmathlab4.MathLAB4.Approxes;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToSolve;
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ public class MessageService {
         }
     }
 
-    public void send_to_graph(MessageToGraph message, Long chatId, Approxes approx) {
+    public void send_to_graphLAB4(MessageToGraph message, Long chatId, Approxes approx) {
         var msg_json = objToJson(message);
         if (msg_json.isPresent()) {
             Message msg = MessageBuilder.withBody(msg_json.get().getBytes())
@@ -73,4 +74,17 @@ public class MessageService {
         }
     }
 
+    public void send_to_graphLAB5(MessageToGraph message, Long chatId, Calculator.Interpolation interpolation) {
+        var msg_json = objToJson(message);
+        if (msg_json.isPresent()) {
+            Message msg = MessageBuilder.withBody(msg_json.get().getBytes())
+                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                    .setHeader("ChatId", chatId)
+                    .setHeader("Interpolation", interpolation.name())
+                    .build();
+            rabbitTemplate.send(toGraphQueue, msg);
+        } else {
+            log.warn("Message was not sent to solver: {}", message.toString());
+        }
+    }
 }

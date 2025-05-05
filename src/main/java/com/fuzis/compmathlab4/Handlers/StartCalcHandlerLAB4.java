@@ -21,7 +21,7 @@ public class StartCalcHandlerLAB4 implements ResponseMethod {
         switch (callbackOnly(update)) {
             case MANUALLY_WRITE_LAB4 -> {
                 state.setMeth(ctx.getBean(PointsEntryHandlerLAB4.class));
-                state.getMode().getPointsEntry(state);
+                state.getMode().getPointsEntryLAB4(state);
             }
             case SEND_FILE_LAB4 -> {
                 state.setMeth(ctx.getBean(PointsEntryFileHandlerLAB4.class));

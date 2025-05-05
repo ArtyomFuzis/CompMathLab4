@@ -4,6 +4,7 @@ import com.fuzis.compmathlab4.Bot;
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.Entities.UserStat;
 import com.fuzis.compmathlab4.MathLAB4.Approxes;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.Repos.StatRepo;
 import com.fuzis.compmathlab4.Utils;
 import com.fuzis.compmathlab4.interfaces.DialogMode;
@@ -89,6 +90,43 @@ public class CommunismMode implements DialogMode {
     }
 
     @Override
+    public void getEnterX(ChatState state) {
+        sendCommunismPhoto("enter", state);
+        bot.sendMessage("Товарищ, пожалуйста, введите X", state);
+    }
+
+    @Override
+    public void getPointsEntryLAB5(ChatState state) {
+        sendCommunismPhoto("enter", state);
+        bot.sendMessage("Введите x в первой строке, y во второй. Разделитель - пробел. X - должны находится на одинаковом расстоянии друг от друга.", state);
+    }
+
+    @Override
+    public void getDifferentDifference(ChatState state) {
+        sendCommunismPhoto("validate", state);
+        bot.sendMessage("X должны находится на одинаковом расстоянии друг от друга", state);
+    }
+
+    @Override
+    public void getSumMatrix(ChatState state) {
+        sendCommunismPhoto("report", state);
+        bot.sendMessage("Матрица конечных разностей:", state);
+    }
+
+    @Override
+    public void getResMethod(ChatState state, Double xVal, Calculator.Interpolation interpolation) {
+        String xStr = String.format("%.5f", xVal);
+        String method = switch (interpolation){
+            case Lagrange -> "Лагранжа";
+            case NewtonFixed -> "Ньютона для конечных сумм";
+            case NewtonDifferent -> "Ньютона для разностных сумм";
+            case Stirling -> "Стирлинга";
+            case Bessel -> "Бесселя";
+        };
+        bot.sendMessage("Вычисленное значение: " + xStr+"(метод "+method+")", state);
+    }
+
+    @Override
     public void getSwitchMode(ChatState state) {
         sendCommunismPhoto("switch", state);
         bot.sendMessage("Товарищ!!!!\nВы в своем уме?! Даже предатель родины бы на такое бы не пошел! Вы правда желаете этого?", state, board.switchBoard());
@@ -105,7 +143,7 @@ public class CommunismMode implements DialogMode {
     }
 
     @Override
-    public void getPointsEntry(ChatState state) {
+    public void getPointsEntryLAB4(ChatState state) {
         sendCommunismPhoto("enter", state);
         bot.sendMessage("Пожалуйста, товарищ, введите от 8 до 12 пар чисел в две строки через пробел. " +
                 "На первой строке должны располагаться значения x, на второй y.", state);
@@ -175,6 +213,7 @@ public class CommunismMode implements DialogMode {
             case Log -> "ЛОГАРИФМИЧЕСКАЯ";
             case Exp -> "ЭКСПОНЕНЦИАЛЬНАЯ";
             case Pow -> "СТЕПЕННАЯ";
+            case None -> "None";
         };
         bot.sendMessage("<b>ФУНКЦИЯ "+functype+"</b>", state);
     }
@@ -210,6 +249,7 @@ public class CommunismMode implements DialogMode {
             case Log -> "логарифмическая";
             case Exp -> "экспоненциальная";
             case Pow -> "степенная";
+            case None -> "None";
         };
         bot.sendMessage("Одна из лучших аппроксимирующих функций: " + functype, state);
     }

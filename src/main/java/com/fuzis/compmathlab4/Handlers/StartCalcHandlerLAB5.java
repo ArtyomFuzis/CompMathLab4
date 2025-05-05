@@ -2,7 +2,6 @@ package com.fuzis.compmathlab4.Handlers;
 
 import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.DialogModes.MathFormat;
-import com.fuzis.compmathlab4.MathLAB5.FuncEntry;
 import com.fuzis.compmathlab4.interfaces.ResponseMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +23,7 @@ public class StartCalcHandlerLAB5 implements ResponseMethod
         switch (callbackOnly(update)) {
             case MANUALLY_WRITE_LAB5 -> {
                 state.setMeth(ctx.getBean(PointsEntryHandlerLAB5.class));
-                state.getMode().getPointsEntry(state);
+                state.getMode().getPointsEntryLAB5(state);
             }
             case SEND_FILE_LAB5 -> {
                 state.setMeth(ctx.getBean(PointsEntryFileHandlerLAB5.class));

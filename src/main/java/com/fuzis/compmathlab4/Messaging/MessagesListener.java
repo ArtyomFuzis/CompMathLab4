@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fuzis.compmathlab4.MathLAB4.Approxes;
 import com.fuzis.compmathlab4.MathLAB4.CalcConductor;
+import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageFromGraph;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageResponse;
 import com.fuzis.compmathlab4.Utils;
@@ -20,13 +21,15 @@ import java.security.NoSuchAlgorithmException;
 public class MessagesListener {
 
     @Autowired
-    private MessagesListener(ObjectMapper objectMapper, CalcConductor calcConductor, Utils utils) {
+    private MessagesListener(ObjectMapper objectMapper, CalcConductor calcConductor, Utils utils, Calculator calc) {
         this.objectMapper = objectMapper;
         this.calcConductor = calcConductor;
         this.utils = utils;
+        this.calc = calc;
     }
     CalcConductor calcConductor;
     Utils utils;
+    Calculator calc;
     private final ObjectMapper objectMapper;
 
 
@@ -36,9 +39,10 @@ public class MessagesListener {
         calcConductor.continueCalculations(msg.X(), chatId, Approxes.valueOf(approx));
     }
     @RabbitListener(queues = "${rabbitmq.from_graph}")
-    public void receiveMessageFromGraph(String message, @Header("ChatId") Long chatId, @Header("Approx") String approx) throws IOException, NoSuchAlgorithmException {
+    public void receiveMessageFromGraph(String message, @Header("ChatId") Long chatId, @Header(value = "Approx", required = false) String approx, @Header(value = "Interpolation", required = false) String interpolation) throws IOException, NoSuchAlgorithmException {
         MessageFromGraph msg = objectMapper.readValue(message, MessageFromGraph.class);
         String uuid = utils.saveGraph(msg.graph());
-        calcConductor.loadGraph(uuid, Approxes.valueOf(approx), chatId);
+        if(msg.type() == 1) calcConductor.loadGraph(uuid, Approxes.valueOf(approx), chatId);
+        else calc.loadGraph(uuid, chatId, Calculator.Interpolation.valueOf(interpolation));
     }
 }

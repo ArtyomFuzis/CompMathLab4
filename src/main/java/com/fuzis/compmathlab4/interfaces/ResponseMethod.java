@@ -4,10 +4,13 @@ import com.fuzis.compmathlab4.Data.ChatState;
 import com.fuzis.compmathlab4.Handlers.StartHandler;
 import com.fuzis.compmathlab4.MathLAB4.CalcConductor;
 import com.fuzis.compmathlab4.MathLAB5.Calculator;
+import com.fuzis.compmathlab4.Utils;
 import org.springframework.context.ApplicationContext;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.*;
+
+import static com.google.common.graph.ElementOrder.sorted;
 
 public interface ResponseMethod
 {
@@ -24,8 +27,8 @@ public interface ResponseMethod
             return null;
         }
     }
-    default void validatePointsAndSendLAB4(String input, ChatState state, CalcConductor calcConductor, ApplicationContext ctx, Update update){
-        var res = validate(input, state, update, true);
+    default void validatePointsAndSendLAB4(Utils utils,String input, ChatState state, CalcConductor calcConductor, ApplicationContext ctx, Update update){
+        var res = validate(input, state,utils, update, true);
         if(res == null)return;
         var xs = res.xs;
         var ys = res.ys;
@@ -33,18 +36,19 @@ public interface ResponseMethod
         state.getMode().getPointsAccepted(state);
         state.setMeth(ctx.getBean(StartHandler.class));
     }
-    default void validatePointsAndSendLAB5(String input, ChatState state, Calculator calc, ApplicationContext ctx, Update update){
-        var res = validate(input, state, update, false);
+    default void validatePointsAndSendLAB5(Utils utils, String input, ChatState state, Calculator calc, ApplicationContext ctx, Update update){
+        var res = validate(input, state,utils, update, false);
         if(res == null)return;
         var xs = res.xs;
         var ys = res.ys;
-        calc.calculateStart(xs, ys, state);
-        state.getMode().getPointsAccepted(state);
-        state.setMeth(ctx.getBean(StartHandler.class));
+        if(!validateDifference(xs)){
+            calc.calculateStart(xs, ys, state, false);
+        }
+        calc.calculateStart(xs, ys, state, true);
     }
-    default Points validate(String input, ChatState state, Update update, boolean cntValidate){
+    default Points validate(String input, ChatState state, Utils utils, Update update, boolean cntValidate){
         var rows = input.trim().split("\n");
-        var regex = cntValidate ? "^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+){7,11}-?\\d+(?:[.,]\\d+)?\\s*$" : "^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+)*-?\\d+(?:[.,]\\d+)?\\s*$";
+        var regex = cntValidate ? "^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+){7,11}-?\\d+(?:[.,]\\d+)?\\s*$" : "^\\s*(?:-?\\d+(?:[.,]\\d+)?\\s+)+-?\\d+(?:[.,]\\d+)?\\s*$";
         if(rows.length != 2){ state.getMode().getPointsWrongRowsSize(state);state.getMode().getDecreaseSocialCredits(state, update);return null;}
         for(var row : rows){
             if(!row.matches(regex)){
@@ -68,6 +72,29 @@ public interface ResponseMethod
         }
         if(xs.size() != ys.size()){ state.getMode().getPointsWrongRowsLength(state);state.getMode().getDecreaseSocialCredits(state, update);return null;}
         if(xs_check.size() != xs.size()) {state.getMode().getPointsSimularPoints(state);state.getMode().getDecreaseSocialCredits(state, update);return null;}
+        if(!cntValidate){
+            var zipped = utils.zipCollections(xs, ys);
+            zipped = zipped.stream().sorted(new Utils.firstComparatorDouble<>()).toList();
+            var nxs = zipped.stream().map(Utils.Pair::a).toList();
+            var nys = zipped.stream().map(Utils.Pair::b).toList();
+            /*if(!validateDifference(nxs)){
+                state.getMode().getDifferentDifference(state);
+                state.getMode().getDecreaseSocialCredits(state, update);
+                return null;
+            }*/
+            return new Points(nxs, nys);
+        }
         return new Points(xs, ys);
+    }
+    default boolean validateDifference(List<Double> xs){
+       if(xs.size() == 2){ return true; }
+       double diff =  xs.get(1) - xs.get(0);
+       for(int i = 1 ; i < xs.size()-1 ; i++){
+           if(xs.get(i+1) - xs.get(i) - diff >= 0.01){
+               System.out.println(i+": " + diff + " " + xs.get(i+1) + " " + xs.get(i));
+               return false;
+           }
+       }
+       return true;
     }
 }
