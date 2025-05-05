@@ -5,6 +5,7 @@ import com.fuzis.compmathlab4.DialogModes.MathFormat;
 import com.fuzis.compmathlab4.Handlers.StartHandler;
 import com.fuzis.compmathlab4.Handlers.XPointEntryHandler;
 import com.fuzis.compmathlab4.MathLAB5.Methods.Lagrange;
+import com.fuzis.compmathlab4.MathLAB5.Methods.NewtonDifference;
 import com.fuzis.compmathlab4.MathLAB5.Methods.NewtonFixed;
 import com.fuzis.compmathlab4.Messaging.MessageService;
 import com.fuzis.compmathlab4.Messaging.Transfer.MessageToGraph;
@@ -19,12 +20,16 @@ import java.util.List;
 @Service
 public class Calculator {
     @Autowired
-    public Calculator(ApplicationContext ctx, MathFormat format, Lagrange lagrangeMeth, MessageService messageService, NewtonFixed newtonFixed) {
+    public Calculator(ApplicationContext ctx, MathFormat format,
+                      Lagrange lagrangeMeth,
+                      MessageService messageService,
+                      NewtonFixed newtonFixed, NewtonDifference newtonDifference) {
         this.ctx = ctx;
         this.format = format;
         interpolations = new HashMap<>();
         interpolations.put(Interpolation.Lagrange, lagrangeMeth);
         interpolations.put(Interpolation.NewtonFixed, newtonFixed);
+        interpolations.put(Interpolation.NewtonDifferent, newtonDifference);
         this.messageService = messageService;
     }
     public enum Interpolation{
@@ -82,6 +87,7 @@ public class Calculator {
                 for (var key : interpolations.keySet()) {
                     var meth = interpolations.get(key);
                     var methRes = meth.getRes(state, xs, ys, x, deltas);
+                    //System.out.println(methRes.xRes() + " " +methRes.yGraph().size()+ " " +methRes.xGraph().size()+ " " +methRes.interX().size()+ " " +methRes.interY().size());
                     if (!stored.containsKey(state.getChatId())) {
                         stored.put(state.getChatId(), new HashMap<>());
                     }

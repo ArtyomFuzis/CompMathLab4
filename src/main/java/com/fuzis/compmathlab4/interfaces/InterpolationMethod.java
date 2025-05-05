@@ -30,8 +30,11 @@ public interface InterpolationMethod
             l = xs.getFirst();
             r = xs.getLast();
         }
+        //System.out.println("l: " + l + ", r: " + r);
         double step = (r-l)/pointAmount;
+        //System.out.println("step: " + step);
         for(double i = l; i < r ; i+=step){
+            //System.out.println("work");
             xInter.add(i);
             yInter.add(f.apply(i));
         }

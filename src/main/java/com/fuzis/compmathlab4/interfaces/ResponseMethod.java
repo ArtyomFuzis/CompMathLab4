@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.*;
 
-import static com.google.common.graph.ElementOrder.sorted;
 
 public interface ResponseMethod
 {
@@ -41,10 +40,7 @@ public interface ResponseMethod
         if(res == null)return;
         var xs = res.xs;
         var ys = res.ys;
-        if(!validateDifference(xs)){
-            calc.calculateStart(xs, ys, state, false);
-        }
-        calc.calculateStart(xs, ys, state, true);
+        calc.calculateStart(xs, ys, state, validateDifference(xs));
     }
     default Points validate(String input, ChatState state, Utils utils, Update update, boolean cntValidate){
         var rows = input.trim().split("\n");
@@ -91,7 +87,7 @@ public interface ResponseMethod
        double diff =  xs.get(1) - xs.get(0);
        for(int i = 1 ; i < xs.size()-1 ; i++){
            if(xs.get(i+1) - xs.get(i) - diff >= 0.01){
-               System.out.println(i+": " + diff + " " + xs.get(i+1) + " " + xs.get(i));
+               //System.out.println(i+": " + diff + " " + xs.get(i+1) + " " + xs.get(i));
                return false;
            }
        }

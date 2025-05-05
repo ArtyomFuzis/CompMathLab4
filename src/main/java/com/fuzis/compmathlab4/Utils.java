@@ -60,7 +60,7 @@ public class Utils {
         @Override
         public int compare(Pair<Double, S> o1, Pair<Double, S> o2) {
             if(o1.a() == o2.a())return 0;
-            return ((double)o1.a() < (double)o2.a()) ? 1 : -1;
+            return ((double)o1.a() < (double)o2.a()) ? -1 : 1;
         }
     }
 }

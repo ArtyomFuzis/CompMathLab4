@@ -5,7 +5,6 @@ import com.fuzis.compmathlab4.MathLAB5.Calculator;
 import com.fuzis.compmathlab4.interfaces.InterpolationMethod;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -27,10 +26,10 @@ public class NewtonFixed implements InterpolationMethod
                 rightChoose = false;
             }
             else{
-                rightChoose = Math.abs(xs.get(ind)-x) < Math.abs(xs.get(n-1)-x);
+                rightChoose = Math.abs(xs.get(ind)-x) < Math.abs(xs.get(ind-1)-x);
             }
             double h = xs.get(1)-xs.get(0);
-            double t = (x-xs.getFirst())/h;
+            double t = rightChoose ?(x-xs.getLast())/h : (x-xs.getFirst())/h;
             double powIter = 1;
             double res = 0;
             if(rightChoose){

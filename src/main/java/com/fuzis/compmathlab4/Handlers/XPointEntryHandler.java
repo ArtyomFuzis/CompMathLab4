@@ -19,7 +19,7 @@ public class XPointEntryHandler implements ResponseMethod {
     public void handle(ChatState state, Update update) {
         if(!update.hasMessage() || !update.getMessage().hasText())  {state.getMode().getNotChoose(state);state.getMode().getDecreaseSocialCredits(state, update);return;}
         try{
-            double x = Double.parseDouble(update.getMessage().getText());
+            double x = Double.parseDouble(update.getMessage().getText().trim().replace(',','.'));
             calc.calc(x, state);
         }
         catch(NumberFormatException e) {
